@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 استوديو التصميم الاحترافي</title>
+    <title>🎨 استوديو الشعارات الاحترافي المطور</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&family=Pacifico&family=Tajawal:wght@300;400;500;700;900&family=Scheherazade+New:wght@400;700&family=Reem+Kufi:wght@400;500;600;700&family=Lalezar&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,9 +16,18 @@
                         'primary': '#6366f1',
                         'secondary': '#8b5cf6',
                         'accent': '#f59e0b',
-                        'dark': '#0a0a0a',
-                        'card': '#1a1a1a',
-                        'border': '#333333'
+                        'dark': '#0f0f0f',
+                        'card': '#1a1a1a'
+                    },
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                        'amiri': ['Amiri', 'serif'],
+                        'pacifico': ['Pacifico', 'cursive'],
+                        'tajawal': ['Tajawal', 'sans-serif'],
+                        'scheherazade': ['Scheherazade New', 'serif'],
+                        'reem': ['Reem Kufi', 'sans-serif'],
+                        'lalezar': ['Lalezar', 'cursive'],
+                        'markazi': ['Markazi Text', 'serif']
                     }
                 }
             }
@@ -27,7 +36,7 @@
     
     <style>
         body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
             font-family: 'Cairo', sans-serif;
         }
         
@@ -56,15 +65,6 @@
             mask-composite: exclude;
         }
         
-        .control-panel {
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            max-height: calc(100vh - 120px);
-            overflow-y: auto;
-        }
-        
         .control-group {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
@@ -81,101 +81,41 @@
             border-color: rgba(99, 102, 241, 0.3);
         }
         
-        .tool-button {
-            background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+        .template-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid transparent;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tool-button:hover {
-            border-color: #6366f1;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-        
-        .tool-button.active {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            border-color: #f59e0b;
-        }
-        
-        .layer-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
         }
         
-        .layer-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .template-card:hover {
             border-color: #6366f1;
+            transform: scale(1.05);
         }
         
-        .layer-item.active {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: #6366f1;
+        .template-card.active {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b20, #6366f120);
         }
         
         .glow-effect {
-            filter: drop-shadow(0 0 20px currentColor);
+            filter: drop-shadow(0 0 var(--glow-intensity, 10px) var(--glow-color, #6366f1));
         }
         
-        .canvas-tools {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            display: flex;
-            gap: 10px;
+        .gradient-text {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #f59e0b);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
         }
         
-        .canvas-zoom {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            z-index: 10;
-        }
-        
-        .progress-bar {
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            height: 4px;
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #6366f1, #8b5cf6);
-            border-radius: 4px;
-        }
-        
-        .crop-area {
-            position: absolute;
-            border: 2px dashed #6366f1;
-            background: rgba(99, 102, 241, 0.1);
-            cursor: move;
-        }
-        
-        .crop-handle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #6366f1;
-            border: 2px solid white;
-            border-radius: 50%;
-            cursor: nwse-resize;
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         @keyframes pulse-glow {
@@ -196,29 +136,51 @@
             animation: float 3s ease-in-out infinite;
         }
         
-        .gradient-text {
-            background: linear-gradient(45deg, #6366f1, #8b5cf6, #f59e0b);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-shift 3s ease infinite;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
         }
         
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
         }
         
-        .blend-modes {
-            mix-blend-mode: var(--blend-mode, normal);
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border-radius: 4px;
+        }
+        
+        .merge-preview {
+            width: 100%;
+            height: 80px;
+            border: 2px dashed #6366f1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .merge-preview:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #f59e0b;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            height: 4px;
+            border-radius: 2px;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-dark text-white min-h-screen overflow-hidden">
+<body class="bg-dark text-white min-h-screen">
     
     <!-- Header -->
-    <header class="glass-effect py-4 mb-6 relative z-50">
-        <div class="container mx-auto px-6">
+    <header class="glass-effect py-6 mb-8">
+        <div class="container mx-auto px-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-reverse space-x-4">
                     <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center animate-float">
@@ -226,521 +188,516 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold gradient-text">
-                            🎨 استوديو التصميم الاحترافي
+                            🎨 استوديو الشعارات الاحترافي المطور
                         </h1>
-                        <p class="text-gray-400 text-sm">أدوات تصميم متقدمة للمحترفين</p>
+                        <p class="text-gray-400 text-sm">صمم شعارك بتأثيرات متقدمة ومؤثرات احترافية</p>
                     </div>
                 </div>
                 
                 <div class="flex items-center space-x-reverse space-x-3">
-                    <button onclick="saveProject()" class="tool-button text-white px-4 py-2 rounded-lg">
+                    <button onclick="saveProject()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
                         <i class="fas fa-save mr-2"></i>حفظ
                     </button>
-                    <button onclick="loadProject()" class="tool-button text-white px-4 py-2 rounded-lg">
+                    <button onclick="loadProject()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
                         <i class="fas fa-folder-open mr-2"></i>فتح
                     </button>
-                    <button onclick="exportOptions()" class="tool-button text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-download mr-2"></i>تصدير
-                    </button>
-                    <button onclick="undoAction()" class="tool-button text-white px-4 py-2 rounded-lg">
+                    <button onclick="undoAction()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
                         <i class="fas fa-undo mr-2"></i>تراجع
-                    </button>
-                    <button onclick="redoAction()" class="tool-button text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-redo mr-2"></i>إعادة
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="flex h-screen">
-        
-        <!-- Left Panel - Tools -->
-        <div class="w-80 control-panel m-4 p-6 custom-scrollbar">
+    <div class="container mx-auto px-4">
+        <div class="grid lg:grid-cols-4 gap-8">
             
-            <!-- Tool Selection -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-tools text-accent mr-2"></i>أدوات التصميم
-                </h3>
-                <div class="grid grid-cols-3 gap-3">
-                    <button class="tool-button p-3 rounded-lg text-center active" onclick="selectTool('text')" data-tool="text">
-                        <i class="fas fa-font text-xl mb-1"></i>
-                        <p class="text-xs">نص</p>
-                    </button>
-                    <button class="tool-button p-3 rounded-lg text-center" onclick="selectTool('brush')" data-tool="brush">
-                        <i class="fas fa-paint-brush text-xl mb-1"></i>
-                        <p class="text-xs">فرشاة</p>
-                    </button>
-                    <button class="tool-button p-3 rounded-lg text-center" onclick="selectTool('crop')" data-tool="crop">
-                        <i class="fas fa-crop-alt text-xl mb-1"></i>
-                        <p class="text-xs">اقتصاص</p>
-                    </button>
-                    <button class="tool-button p-3 rounded-lg text-center" onclick="selectTool('eraser')" data-tool="eraser">
-                        <i class="fas fa-eraser text-xl mb-1"></i>
-                        <p class="text-xs">ممحاة</p>
-                    </button>
-                    <button class="tool-button p-3 rounded-lg text-center" onclick="selectTool('select')" data-tool="select">
-                        <i class="fas fa-vector-square text-xl mb-1"></i>
-                        <p class="text-xs">تحديد</p>
-                    </button>
-                    <button class="tool-button p-3 rounded-lg text-center" onclick="selectTool('effects')" data-tool="effects">
-                        <i class="fas fa-magic text-xl mb-1"></i>
-                        <p class="text-xs">تأثيرات</p>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Text Tools -->
-            <div id="textTools" class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-font text-accent mr-2"></i>إعدادات النص
-                </h3>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">النص</label>
-                        <textarea id="textInput" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none resize-none text-base" 
-                                  rows="3" placeholder="اكتب نصك هنا..." oninput="updateText()">شعار احترافي</textarea>
-                    </div>
-                    
+            <!-- Left Panel - Controls -->
+            <div class="lg:col-span-1 space-y-6 custom-scrollbar" style="max-height: 80vh; overflow-y: auto;">
+                
+                <!-- Templates -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-star text-accent mr-2"></i>قوالب جاهزة
+                    </h3>
                     <div class="grid grid-cols-2 gap-3">
+                        <div class="template-card" onclick="applyTemplate('modern')">
+                            <i class="fas fa-rocket text-2xl text-primary mb-2"></i>
+                            <p class="text-sm">عصري</p>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('glow')">
+                            <i class="fas fa-star text-2xl text-accent mb-2 animate-glow"></i>
+                            <p class="text-sm">متوهج</p>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('neon')">
+                            <i class="fas fa-lightbulb text-2xl text-cyan-400 mb-2"></i>
+                            <p class="text-sm">نيون</p>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('vintage')">
+                            <i class="fas fa-camera-retro text-2xl text-amber-600 mb-2"></i>
+                            <p class="text-sm">كلاسيكي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Settings -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-font text-accent mr-2"></i>إعدادات النص
+                    </h3>
+                    <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium mb-2">الخط</label>
-                            <select id="fontFamily" onchange="updateText()" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
-                                <option value="Cairo">Cairo</option>
-                                <option value="Amiri">Amiri</option>
-                                <option value="Tajawal">Tajawal</option>
-                                <option value="Reem Kufi">Reem Kufi</option>
-                                <option value="Lalezar">Lalezar</option>
-                                <option value="Pacifico">Pacifico</option>
-                            </select>
+                            <label class="block text-sm font-medium mb-2">نص الشعار</label>
+                            <textarea id="textInput" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none resize-none text-base" 
+                                      rows="2" placeholder="اكتب نصك هنا..." oninput="drawLogo()">شعار احترافي</textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">الخط</label>
+                                <select id="fontFamily" onchange="drawLogo()" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
+                                    <option value="Cairo">Cairo - القاهرة</option>
+                                    <option value="Amiri">Amiri - أميري</option>
+                                    <option value="Tajawal">Tajawal - تجوال</option>
+                                    <option value="Reem Kufi">Reem Kufi - ريم كوفي</option>
+                                    <option value="Scheherazade New">Scheherazade - شهرزاد</option>
+                                    <option value="Lalezar">Lalezar - لاله زار</option>
+                                    <option value="Markazi Text">Markazi - مركزي</option>
+                                    <option value="Pacifico">Pacifico</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">الحجم</label>
+                                <input type="range" id="fontSize" min="20" max="150" value="70" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="fontSizeDisplay" class="text-xs text-gray-400">70px</span>
+                            </div>
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-2">الحجم</label>
-                            <input type="range" id="fontSize" min="12" max="200" value="60" class="w-full accent-primary" oninput="updateDisplay(); updateText()" />
-                            <span id="fontSizeDisplay" class="text-xs text-gray-400">60px</span>
+                            <label class="block text-sm font-medium mb-2">سماكة الخط</label>
+                            <select id="fontWeight" onchange="drawLogo()" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
+                                <option value="300">خفيف</option>
+                                <option value="400">عادي</option>
+                                <option value="600">متوسط</option>
+                                <option value="700" selected>عريض</option>
+                                <option value="900">سميك جداً</option>
+                            </select>
                         </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-4 gap-2">
-                        <button class="tool-button p-2 rounded" onclick="toggleTextStyle('bold')" data-style="bold">
-                            <i class="fas fa-bold"></i>
-                        </button>
-                        <button class="tool-button p-2 rounded" onclick="toggleTextStyle('italic')" data-style="italic">
-                            <i class="fas fa-italic"></i>
-                        </button>
-                        <button class="tool-button p-2 rounded" onclick="toggleTextStyle('underline')" data-style="underline">
-                            <i class="fas fa-underline"></i>
-                        </button>
-                        <button class="tool-button p-2 rounded" onclick="addTextShadow()">
-                            <i class="fas fa-clone"></i>
-                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Effects Panel -->
-            <div id="effectsPanel" class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-magic text-accent mr-2"></i>التأثيرات المتقدمة
-                </h3>
-                
-                <div class="space-y-4">
-                    <!-- Glow Effects -->
-                    <div>
-                        <label class="block text-sm font-medium mb-2">تأثير التوهج</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <input type="checkbox" id="enableGlow" onchange="updateEffects()" class="mr-2 accent-primary" />
-                                <span class="text-sm">تفعيل التوهج</span>
+                <!-- Advanced Effects -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-magic text-accent mr-2"></i>التأثيرات المتقدمة
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Glow Effects -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-sm font-medium">تأثير التوهج</label>
+                                <input type="checkbox" id="enableGlow" onchange="drawLogo()" class="accent-primary" />
                             </div>
-                            <div>
-                                <input type="range" id="glowIntensity" min="0" max="50" value="10" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
-                                <span id="glowIntensityDisplay" class="text-xs text-gray-400">10px</span>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">شدة التوهج</label>
+                                    <input type="range" id="glowIntensity" min="0" max="50" value="15" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                    <span id="glowIntensityDisplay" class="text-xs text-gray-400">15px</span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">لون التوهج</label>
+                                    <input type="color" id="glowColor" value="#6366f1" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                                </div>
                             </div>
                         </div>
-                        <div class="mt-2">
-                            <label class="block text-xs text-gray-400 mb-1">لون التوهج</label>
-                            <input type="color" id="glowColor" value="#6366f1" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer" onchange="updateEffects()" />
-                        </div>
-                    </div>
 
-                    <!-- Advanced Shadows -->
-                    <div>
-                        <label class="block text-sm font-medium mb-2">ظلال متقدمة</label>
-                        <div class="space-y-2">
+                        <!-- Advanced Shadows -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-sm font-medium">ظلال متقدمة</label>
+                                <input type="checkbox" id="enableShadow" checked onchange="drawLogo()" class="accent-primary" />
+                            </div>
                             <div class="grid grid-cols-3 gap-2">
                                 <div>
                                     <label class="block text-xs text-gray-400 mb-1">X</label>
-                                    <input type="range" id="shadowX" min="-50" max="50" value="5" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
+                                    <input type="range" id="shadowX" min="-20" max="20" value="5" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
                                     <span id="shadowXDisplay" class="text-xs text-gray-400">5px</span>
                                 </div>
                                 <div>
                                     <label class="block text-xs text-gray-400 mb-1">Y</label>
-                                    <input type="range" id="shadowY" min="-50" max="50" value="5" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
+                                    <input type="range" id="shadowY" min="-20" max="20" value="5" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
                                     <span id="shadowYDisplay" class="text-xs text-gray-400">5px</span>
                                 </div>
                                 <div>
                                     <label class="block text-xs text-gray-400 mb-1">ضبابية</label>
-                                    <input type="range" id="shadowBlur" min="0" max="30" value="10" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
+                                    <input type="range" id="shadowBlur" min="0" max="30" value="10" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
                                     <span id="shadowBlurDisplay" class="text-xs text-gray-400">10px</span>
                                 </div>
                             </div>
-                            <input type="color" id="shadowColor" value="#000000" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer" onchange="updateEffects()" />
+                            <input type="color" id="shadowColor" value="#000000" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer mt-2" onchange="drawLogo()" />
+                        </div>
+
+                        <!-- Stroke/Outline -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-sm font-medium">حدود النص</label>
+                                <input type="checkbox" id="enableStroke" onchange="drawLogo()" class="accent-primary" />
+                            </div>
+                            <div class="grid grid-cols-2 gap-3" id="strokeControls">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">سماكة الحدود</label>
+                                    <input type="range" id="strokeWidth" min="1" max="15" value="3" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                    <span id="strokeWidthDisplay" class="text-xs text-gray-400">3px</span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">لون الحدود</label>
+                                    <input type="color" id="strokeColor" value="#000000" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filters -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2">المرشحات البصرية</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">السطوع</label>
+                                    <input type="range" id="brightness" min="50" max="200" value="100" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                    <span id="brightnessDisplay" class="text-xs text-gray-400">100%</span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">التباين</label>
+                                    <input type="range" id="contrast" min="50" max="200" value="100" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                    <span id="contrastDisplay" class="text-xs text-gray-400">100%</span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">التشبع</label>
+                                    <input type="range" id="saturate" min="0" max="200" value="100" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                    <span id="saturateDisplay" class="text-xs text-gray-400">100%</span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-1">الدوران اللوني</label>
+                                    <input type="range" id="hueRotate" min="0" max="360" value="0" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                    <span id="hueRotateDisplay" class="text-xs text-gray-400">0°</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Filters -->
-                    <div>
-                        <label class="block text-sm font-medium mb-2">المرشحات</label>
+                <!-- Background Removal -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-scissors text-accent mr-2"></i>إزالة الخلفية
+                    </h3>
+                    <div class="space-y-3">
+                        <input type="file" id="bgRemovalInput" accept="image/*" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm" />
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="removeBackground()" class="bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-cut mr-1"></i>إزالة تلقائي
+                            </button>
+                            <button onclick="smartRemove()" class="bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-brain mr-1"></i>إزالة ذكي
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Merger -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-object-group text-accent mr-2"></i>دمج الصور
+                    </h3>
+                    <div class="space-y-3">
+                        <input type="file" id="mergeImages" multiple accept="image/*" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm" />
+                        
+                        <div class="merge-preview" id="mergePreview">
+                            <div class="text-center">
+                                <i class="fas fa-images text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-400">اختر الصور للمعاينة</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="setMergeMode('horizontal')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-xs" id="mergeHorizontal">أفقي</button>
+                            <button onclick="setMergeMode('vertical')" class="bg-gray-600 hover:bg-gray-700 text-white py-2 rounded text-xs" id="mergeVertical">عمودي</button>
+                            <button onclick="setMergeMode('grid')" class="bg-gray-600 hover:bg-gray-700 text-white py-2 rounded text-xs" id="mergeGrid">شبكة</button>
+                        </div>
+                        
+                        <button onclick="mergeSelectedImages()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg">
+                            <i class="fas fa-compress-arrows-alt mr-2"></i>دمج الصور
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Canvas -->
+            <div class="lg:col-span-2">
+                <div class="canvas-container">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-paint-brush text-accent mr-2"></i>معاينة التصميم
+                        </h2>
+                        <div class="flex space-x-reverse space-x-3">
+                            <button onclick="resetAll()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                                <i class="fas fa-undo mr-2"></i>إعادة تعيين
+                            </button>
+                            <button onclick="drawLogo()" class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                                <i class="fas fa-sync mr-2"></i>تحديث
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <canvas id="logoCanvas" width="800" height="400" 
+                                class="border-2 border-gray-600 rounded-lg shadow-2xl max-w-full h-auto bg-white"></canvas>
+                    </div>
+
+                    <!-- Canvas Controls -->
+                    <div class="mt-6 flex justify-center space-x-reverse space-x-4">
+                        <button onclick="zoomIn()" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button onclick="zoomOut()" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button onclick="resetZoom()" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </button>
+                        <span id="zoomLevel" class="bg-gray-800 text-white px-3 py-2 rounded-lg">100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Colors & Position -->
+            <div class="lg:col-span-1 space-y-6 custom-scrollbar" style="max-height: 80vh; overflow-y: auto;">
+                
+                <!-- Colors -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-palette text-accent mr-2"></i>الألوان والتدرجات
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">نوع التلوين</label>
+                            <select id="colorType" onchange="toggleColorMode(); drawLogo()" class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
+                                <option value="solid">لون واحد</option>
+                                <option value="gradient">متدرج</option>
+                                <option value="rainbow">قوس قزح</option>
+                            </select>
+                        </div>
+
+                        <div id="solidColorSection">
+                            <label class="block text-sm font-medium mb-2">لون النص</label>
+                            <input type="color" id="textColor" value="#6366f1" class="w-full h-12 rounded-lg border border-gray-600 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                        </div>
+
+                        <div id="gradientColorSection" class="hidden">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">اللون الأول</label>
+                                    <input type="color" id="gradientColor1" value="#6366f1" class="w-full h-10 rounded border border-gray-600 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">اللون الثاني</label>
+                                    <input type="color" id="gradientColor2" value="#8b5cf6" class="w-full h-10 rounded border border-gray-600 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label class="block text-sm font-medium mb-2">اتجاه التدرج</label>
+                                <input type="range" id="gradientAngle" min="0" max="360" value="45" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="gradientAngleDisplay" class="text-xs text-gray-400">45°</span>
+                            </div>
+                        </div>
+
+                        <!-- Color Presets -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2">ألوان جاهزة</label>
+                            <div class="grid grid-cols-4 gap-2">
+                                <div class="w-10 h-10 bg-white rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#ffffff')"></div>
+                                <div class="w-10 h-10 bg-black rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#000000')"></div>
+                                <div class="w-10 h-10 bg-blue-500 rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#6366f1')"></div>
+                                <div class="w-10 h-10 bg-purple-500 rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#8b5cf6')"></div>
+                                <div class="w-10 h-10 bg-yellow-500 rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#f59e0b')"></div>
+                                <div class="w-10 h-10 bg-red-500 rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#ef4444')"></div>
+                                <div class="w-10 h-10 bg-green-500 rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#10b981')"></div>
+                                <div class="w-10 h-10 bg-cyan-500 rounded-full cursor-pointer border-2 border-gray-600 hover:border-white transition-colors" onclick="setColor('#06b6d4')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Position & Transform -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-arrows-alt text-accent mr-2"></i>الموضع والتحويل
+                    </h3>
+                    <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs text-gray-400 mb-1">السطوع</label>
-                                <input type="range" id="brightness" min="0" max="200" value="100" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
-                                <span id="brightnessDisplay" class="text-xs text-gray-400">100%</span>
+                                <label class="block text-sm font-medium mb-2">تحريك أفقي</label>
+                                <input type="range" id="moveX" min="-200" max="200" value="0" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="moveXDisplay" class="text-xs text-gray-400">0px</span>
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-400 mb-1">التباين</label>
-                                <input type="range" id="contrast" min="0" max="200" value="100" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
-                                <span id="contrastDisplay" class="text-xs text-gray-400">100%</span>
+                                <label class="block text-sm font-medium mb-2">تحريك عمودي</label>
+                                <input type="range" id="moveY" min="-100" max="100" value="0" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="moveYDisplay" class="text-xs text-gray-400">0px</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">دوران</label>
+                                <input type="range" id="rotation" min="-180" max="180" value="0" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="rotationDisplay" class="text-xs text-gray-400">0°</span>
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-400 mb-1">التشبع</label>
-                                <input type="range" id="saturate" min="0" max="200" value="100" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
-                                <span id="saturateDisplay" class="text-xs text-gray-400">100%</span>
+                                <label class="block text-sm font-medium mb-2">الشفافية</label>
+                                <input type="range" id="opacity" min="0.1" max="1" step="0.1" value="1" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="opacityDisplay" class="text-xs text-gray-400">100%</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">تكبير</label>
+                                <input type="range" id="scaleX" min="0.5" max="3" step="0.1" value="1" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="scaleXDisplay" class="text-xs text-gray-400">100%</span>
                             </div>
                             <div>
-                                <label class="block text-xs text-gray-400 mb-1">الدوران اللوني</label>
-                                <input type="range" id="hueRotate" min="0" max="360" value="0" class="w-full accent-primary" oninput="updateDisplay(); updateEffects()" />
-                                <span id="hueRotateDisplay" class="text-xs text-gray-400">0°</span>
+                                <label class="block text-sm font-medium mb-2">انحراف</label>
+                                <input type="range" id="skewX" min="-45" max="45" value="0" class="w-full accent-primary" oninput="updateDisplay(); drawLogo()" />
+                                <span id="skewXDisplay" class="text-xs text-gray-400">0°</span>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Blend Modes -->
-                    <div>
-                        <label class="block text-sm font-medium mb-2">أنماط المزج</label>
-                        <select id="blendMode" onchange="updateEffects()" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
-                            <option value="normal">عادي</option>
-                            <option value="multiply">ضرب</option>
-                            <option value="screen">شاشة</option>
-                            <option value="overlay">تراكب</option>
-                            <option value="soft-light">ضوء ناعم</option>
-                            <option value="hard-light">ضوء قاسي</option>
-                            <option value="color-dodge">تفادي اللون</option>
-                            <option value="color-burn">حرق اللون</option>
-                            <option value="difference">اختلاف</option>
-                            <option value="exclusion">استبعاد</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Layers Panel -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-layer-group text-accent mr-2"></i>الطبقات
-                </h3>
-                <div class="space-y-2" id="layersContainer">
-                    <!-- Layers will be added dynamically -->
-                </div>
-                <button onclick="addNewLayer()" class="w-full bg-primary hover:bg-blue-700 text-white py-2 rounded-lg mt-3">
-                    <i class="fas fa-plus mr-2"></i>إضافة طبقة
-                </button>
-            </div>
-
-            <!-- Background Removal -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-cut text-accent mr-2"></i>إزالة الخلفية
-                </h3>
-                <div class="space-y-3">
-                    <input type="file" id="bgRemovalInput" accept="image/*" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm" />
-                    <button onclick="removeBackground()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
-                        <i class="fas fa-scissors mr-2"></i>إزالة الخلفية
-                    </button>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="selectBackground()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">
-                            <i class="fas fa-mouse-pointer mr-1"></i>تحديد
-                        </button>
-                        <button onclick="smartSelect()" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-sm">
-                            <i class="fas fa-brain mr-1"></i>ذكي
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Image Merger -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-object-group text-accent mr-2"></i>دمج الصور
-                </h3>
-                <div class="space-y-3">
-                    <input type="file" id="mergeImages" multiple accept="image/*" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm" />
-                    <button onclick="mergeSelectedImages()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg">
-                        <i class="fas fa-compress-arrows-alt mr-2"></i>دمج الصور
-                    </button>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button onclick="setMergeMode('horizontal')" class="bg-gray-600 hover:bg-gray-700 text-white py-1 rounded text-xs">أفقي</button>
-                        <button onclick="setMergeMode('vertical')" class="bg-gray-600 hover:bg-gray-700 text-white py-1 rounded text-xs">عمودي</button>
-                        <button onclick="setMergeMode('grid')" class="bg-gray-600 hover:bg-gray-700 text-white py-1 rounded text-xs">شبكة</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Center Panel - Canvas -->
-        <div class="flex-1 flex flex-col p-4">
-            <div class="canvas-container flex-1 relative">
-                <!-- Canvas Tools -->
-                <div class="canvas-tools">
-                    <button class="tool-button p-2 rounded-lg" onclick="zoomIn()">
-                        <i class="fas fa-search-plus"></i>
-                    </button>
-                    <button class="tool-button p-2 rounded-lg" onclick="zoomOut()">
-                        <i class="fas fa-search-minus"></i>
-                    </button>
-                    <button class="tool-button p-2 rounded-lg" onclick="resetZoom()">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </button>
-                    <button class="tool-button p-2 rounded-lg" onclick="toggleGrid()">
-                        <i class="fas fa-th"></i>
-                    </button>
-                    <button class="tool-button p-2 rounded-lg" onclick="toggleRulers()">
-                        <i class="fas fa-ruler-combined"></i>
-                    </button>
                 </div>
 
-                <!-- Canvas Zoom Info -->
-                <div class="canvas-zoom">
-                    <div class="glass-effect px-3 py-2 rounded-lg text-sm">
-                        <span id="zoomLevel">100%</span>
+                <!-- Background -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-image text-accent mr-2"></i>الخلفية
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">نوع الخلفية</label>
+                            <select id="bgType" onchange="toggleBgMode(); drawLogo()" class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
+                                <option value="color">لون واحد</option>
+                                <option value="gradient">متدرج</option>
+                                <option value="image">صورة</option>
+                                <option value="transparent">شفاف</option>
+                            </select>
+                        </div>
+
+                        <div id="bgColorSection">
+                            <label class="block text-sm font-medium mb-2">لون الخلفية</label>
+                            <input type="color" id="bgColor" value="#ffffff" class="w-full h-12 rounded-lg border border-gray-600 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                        </div>
+
+                        <div id="bgGradientSection" class="hidden">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">اللون الأول</label>
+                                    <input type="color" id="bgGradientColor1" value="#ffffff" class="w-full h-10 rounded border border-gray-600 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">اللون الثاني</label>
+                                    <input type="color" id="bgGradientColor2" value="#f0f0f0" class="w-full h-10 rounded border border-gray-600 bg-transparent cursor-pointer" onchange="drawLogo()" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="bgImageSection" class="hidden">
+                            <input type="file" id="bgImageInput" accept="image/*" class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm" />
+                        </div>
                     </div>
                 </div>
 
-                <!-- Main Canvas -->
-                <div class="flex items-center justify-center h-full">
-                    <div id="canvasWrapper" class="relative">
-                        <canvas id="mainCanvas" width="800" height="600" 
-                                class="border-2 border-gray-600 rounded-lg shadow-2xl bg-white cursor-crosshair"
-                                onmousedown="startDrawing(event)"
-                                onmousemove="draw(event)"
-                                onmouseup="stopDrawing()"
-                                onmouseleave="stopDrawing()"></canvas>
+                <!-- Animation -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-play text-accent mr-2"></i>الحركة والأنيميشن
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="animateRotate()" class="bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-sync-alt mr-1"></i>دوران
+                            </button>
+                            <button onclick="animateScale()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-expand-arrows-alt mr-1"></i>تكبير
+                            </button>
+                            <button onclick="animateGlow()" class="bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-star mr-1"></i>توهج
+                            </button>
+                            <button onclick="animateFade()" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-eye mr-1"></i>اختفاء
+                            </button>
+                        </div>
                         
-                        <!-- Crop Area (hidden by default) -->
-                        <div id="cropArea" class="crop-area hidden">
-                            <div class="crop-handle" style="top: -5px; left: -5px;"></div>
-                            <div class="crop-handle" style="top: -5px; right: -5px;"></div>
-                            <div class="crop-handle" style="bottom: -5px; left: -5px;"></div>
-                            <div class="crop-handle" style="bottom: -5px; right: -5px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom Tools -->
-            <div class="mt-6">
-                <div class="glass-effect p-4 rounded-lg">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-reverse space-x-4">
-                            <!-- Color Palette -->
-                            <div class="flex items-center space-x-reverse space-x-2">
-                                <label class="text-sm font-medium">اللون:</label>
-                                <input type="color" id="primaryColor" value="#6366f1" class="w-10 h-10 rounded border-2 border-gray-600 bg-transparent cursor-pointer" onchange="updateColor()" />
-                                <input type="color" id="secondaryColor" value="#8b5cf6" class="w-10 h-10 rounded border-2 border-gray-600 bg-transparent cursor-pointer" onchange="updateColor()" />
-                            </div>
-
-                            <!-- Brush Size -->
-                            <div class="flex items-center space-x-reverse space-x-2">
-                                <label class="text-sm font-medium">الفرشاة:</label>
-                                <input type="range" id="brushSize" min="1" max="50" value="5" class="accent-primary" oninput="updateDisplay(); updateBrush()" />
-                                <span id="brushSizeDisplay" class="text-xs text-gray-400 w-8">5px</span>
-                            </div>
-
-                            <!-- Opacity -->
-                            <div class="flex items-center space-x-reverse space-x-2">
-                                <label class="text-sm font-medium">الشفافية:</label>
-                                <input type="range" id="opacity" min="0" max="100" value="100" class="accent-primary" oninput="updateDisplay(); updateOpacity()" />
-                                <span id="opacityDisplay" class="text-xs text-gray-400 w-12">100%</span>
-                            </div>
-                        </div>
-
-                        <div class="flex space-x-reverse space-x-3">
-                            <button onclick="clearCanvas()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                                <i class="fas fa-trash mr-2"></i>مسح
-                            </button>
-                            <button onclick="duplicateCanvas()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                                <i class="fas fa-copy mr-2"></i>نسخ
-                            </button>
-                            <button onclick="flipHorizontal()" class="tool-button text-white px-4 py-2 rounded-lg">
-                                <i class="fas fa-arrows-alt-h mr-2"></i>قلب أفقي
-                            </button>
-                            <button onclick="flipVertical()" class="tool-button text-white px-4 py-2 rounded-lg">
-                                <i class="fas fa-arrows-alt-v mr-2"></i>قلب عمودي
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Panel - Advanced Options -->
-        <div class="w-80 control-panel m-4 p-6 custom-scrollbar">
-            
-            <!-- Color Gradients -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-palette text-accent mr-2"></i>التدرجات اللونية
-                </h3>
-                <div class="space-y-3">
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="gradient-preview bg-gradient-to-r from-blue-500 to-purple-600" onclick="applyGradient('blue-purple')"></div>
-                        <div class="gradient-preview bg-gradient-to-r from-pink-500 to-orange-500" onclick="applyGradient('pink-orange')"></div>
-                        <div class="gradient-preview bg-gradient-to-r from-green-400 to-blue-600" onclick="applyGradient('green-blue')"></div>
-                        <div class="gradient-preview bg-gradient-to-r from-purple-600 to-pink-600" onclick="applyGradient('purple-pink')"></div>
-                    </div>
-                    
-                    <div class="space-y-2">
-                        <label class="block text-sm font-medium">تدرج مخصص</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="color" id="gradStart" value="#6366f1" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer" />
-                            <input type="color" id="gradEnd" value="#8b5cf6" class="w-full h-8 rounded border-0 bg-transparent cursor-pointer" />
-                        </div>
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">الاتجاه</label>
-                            <input type="range" id="gradAngle" min="0" max="360" value="45" class="w-full accent-primary" oninput="updateDisplay()" />
-                            <span id="gradAngleDisplay" class="text-xs text-gray-400">45°</span>
+                            <label class="block text-sm font-medium mb-2">سرعة الحركة</label>
+                            <input type="range" id="animSpeed" min="0.5" max="5" step="0.5" value="2" class="w-full accent-primary" oninput="updateDisplay()" />
+                            <span id="animSpeedDisplay" class="text-xs text-gray-400">2x</span>
                         </div>
-                        <button onclick="applyCustomGradient()" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 rounded-lg">
-                            تطبيق التدرج
+                        
+                        <button onclick="stopAllAnimations()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
+                            <i class="fas fa-stop mr-2"></i>إيقاف الحركة
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Animation -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-play text-accent mr-2"></i>الحركة والأنيميشن
-                </h3>
-                <div class="space-y-3">
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="animateRotate()" class="tool-button text-white py-2 rounded-lg text-sm">
-                            <i class="fas fa-sync-alt mb-1"></i><br>دوران
+                <!-- Export & Actions -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-download text-accent mr-2"></i>التصدير والحفظ
+                    </h3>
+                    <div class="space-y-3">
+                        <button onclick="downloadCanvas('png')" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium">
+                            <i class="fas fa-file-image mr-2"></i>تحميل PNG
                         </button>
-                        <button onclick="animateScale()" class="tool-button text-white py-2 rounded-lg text-sm">
-                            <i class="fas fa-expand-arrows-alt mb-1"></i><br>تكبير
+                        <button onclick="downloadCanvas('jpg')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium">
+                            <i class="fas fa-file-image mr-2"></i>تحميل JPG
                         </button>
-                        <button onclick="animateFade()" class="tool-button text-white py-2 rounded-lg text-sm">
-                            <i class="fas fa-eye mb-1"></i><br>اختفاء
+                        <button onclick="copyToClipboard()" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-lg font-medium">
+                            <i class="fas fa-copy mr-2"></i>نسخ للحافظة
                         </button>
-                        <button onclick="animateGlow()" class="tool-button text-white py-2 rounded-lg text-sm">
-                            <i class="fas fa-star mb-1"></i><br>توهج
-                        </button>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium mb-2">سرعة الحركة</label>
-                        <input type="range" id="animSpeed" min="0.5" max="5" step="0.5" value="2" class="w-full accent-primary" oninput="updateDisplay()" />
-                        <span id="animSpeedDisplay" class="text-xs text-gray-400">2x</span>
-                    </div>
-                    
-                    <button onclick="stopAllAnimations()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
-                        <i class="fas fa-stop mr-2"></i>إيقاف الحركة
-                    </button>
-                </div>
-            </div>
-
-            <!-- Export Settings -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-download text-accent mr-2"></i>إعدادات التصدير
-                </h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">الصيغة</label>
-                        <select id="exportFormat" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm">
-                            <option value="png">PNG (شفاف)</option>
-                            <option value="jpg">JPG (مضغوط)</option>
-                            <option value="svg">SVG (متجه)</option>
-                            <option value="pdf">PDF (طباعة)</option>
-                            <option value="webp">WebP (ويب)</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium mb-2">الجودة</label>
-                        <input type="range" id="exportQuality" min="1" max="100" value="90" class="w-full accent-primary" oninput="updateDisplay()" />
-                        <span id="exportQualityDisplay" class="text-xs text-gray-400">90%</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">العرض</label>
-                            <input type="number" id="exportWidth" value="800" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">الارتفاع</label>
-                            <input type="number" id="exportHeight" value="600" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:border-primary focus:outline-none text-sm" />
+                        
+                        <div class="grid grid-cols-2 gap-3 mt-4">
+                            <button onclick="randomizeAll()" class="bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-dice mr-1"></i>عشوائي
+                            </button>
+                            <button onclick="addWatermark()" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm">
+                                <i class="fas fa-signature mr-1"></i>علامة مائية
+                            </button>
                         </div>
                     </div>
-                    
-                    <button onclick="exportCanvas()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium">
-                        <i class="fas fa-download mr-2"></i>تصدير العمل
-                    </button>
                 </div>
-            </div>
 
-            <!-- Quick Actions -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-bolt text-accent mr-2"></i>إجراءات سريعة
-                </h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="randomizeAll()" class="tool-button text-white py-3 rounded-lg text-sm">
-                        <i class="fas fa-random mb-1"></i><br>عشوائي
-                    </button>
-                    <button onclick="autoEnhance()" class="tool-button text-white py-3 rounded-lg text-sm">
-                        <i class="fas fa-magic mb-1"></i><br>تحسين تلقائي
-                    </button>
-                    <button onclick="addWatermark()" class="tool-button text-white py-3 rounded-lg text-sm">
-                        <i class="fas fa-signature mb-1"></i><br>علامة مائية
-                    </button>
-                    <button onclick="generateQR()" class="tool-button text-white py-3 rounded-lg text-sm">
-                        <i class="fas fa-qrcode mb-1"></i><br>QR كود
-                    </button>
-                    <button onclick="applyVintage()" class="tool-button text-white py-3 rounded-lg text-sm">
-                        <i class="fas fa-camera-retro mb-1"></i><br>قديم
-                    </button>
-                    <button onclick="makeNeon()" class="tool-button text-white py-3 rounded-lg text-sm">
-                        <i class="fas fa-lightbulb mb-1"></i><br>نيون
-                    </button>
-                </div>
-            </div>
-
-            <!-- Project Info -->
-            <div class="control-group">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
-                    <i class="fas fa-info-circle text-accent mr-2"></i>معلومات المشروع
-                </h3>
-                <div class="space-y-2 text-sm text-gray-300">
-                    <div class="flex justify-between">
-                        <span>الأبعاد:</span>
-                        <span id="canvasSize">800 × 600</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>عدد الطبقات:</span>
-                        <span id="layerCount">1</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>حجم الملف:</span>
-                        <span id="fileSize">~2.1 MB</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>التكبير:</span>
-                        <span id="currentZoom">100%</span>
+                <!-- Quick Info -->
+                <div class="control-group">
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-info-circle text-accent mr-2"></i>معلومات سريعة
+                    </h3>
+                    <div class="space-y-2 text-sm text-gray-300">
+                        <div class="flex justify-between">
+                            <span>الأبعاد:</span>
+                            <span id="canvasInfo">800 × 400</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>الخط:</span>
+                            <span id="fontInfo">Cairo</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>الحجم:</span>
+                            <span id="sizeInfo">70px</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>الأحرف:</span>
+                            <span id="charCount">12</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -763,401 +720,422 @@
 
     <script>
         // Global Variables
-        let canvas, ctx;
-        let currentTool = 'text';
-        let isDrawing = false;
-        let lastX = 0, lastY = 0;
-        let currentZoom = 1;
-        let layers = [];
-        let currentLayer = 0;
+        let bgImage = null;
+        let isAnimating = false;
+        let animationId = null;
         let undoStack = [];
         let redoStack = [];
-        let animationIds = [];
-        let textElements = [];
-        let cropMode = false;
+        let currentZoom = 1;
         let mergeMode = 'horizontal';
+        let selectedImages = [];
 
         // Initialize
         window.onload = function() {
-            canvas = document.getElementById('mainCanvas');
-            ctx = canvas.getContext('2d');
-            
-            initializeLayers();
             updateDisplay();
-            drawCanvas();
-            
-            // Setup event listeners
+            drawLogo();
             setupEventListeners();
         };
 
-        function initializeLayers() {
-            layers = [{
-                id: 'layer1',
-                name: 'الطبقة الأساسية',
-                visible: true,
-                opacity: 1,
-                data: ctx.createImageData(canvas.width, canvas.height)
-            }];
-            updateLayersPanel();
+        function setupEventListeners() {
+            // Background image
+            document.getElementById("bgImageInput").addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const img = new Image();
+                        img.onload = function () {
+                            bgImage = img;
+                            drawLogo();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Background removal
+            document.getElementById('bgRemovalInput').addEventListener('change', handleBgRemovalUpload);
+            
+            // Image merger
+            document.getElementById('mergeImages').addEventListener('change', handleImageMergeUpload);
         }
 
         function updateDisplay() {
-            // Update all display spans
+            // Update all range displays
             document.getElementById('fontSizeDisplay').textContent = document.getElementById('fontSize').value + 'px';
             document.getElementById('glowIntensityDisplay').textContent = document.getElementById('glowIntensity').value + 'px';
             document.getElementById('shadowXDisplay').textContent = document.getElementById('shadowX').value + 'px';
             document.getElementById('shadowYDisplay').textContent = document.getElementById('shadowY').value + 'px';
             document.getElementById('shadowBlurDisplay').textContent = document.getElementById('shadowBlur').value + 'px';
+            document.getElementById('strokeWidthDisplay').textContent = document.getElementById('strokeWidth').value + 'px';
             document.getElementById('brightnessDisplay').textContent = document.getElementById('brightness').value + '%';
             document.getElementById('contrastDisplay').textContent = document.getElementById('contrast').value + '%';
             document.getElementById('saturateDisplay').textContent = document.getElementById('saturate').value + '%';
             document.getElementById('hueRotateDisplay').textContent = document.getElementById('hueRotate').value + '°';
-            document.getElementById('brushSizeDisplay').textContent = document.getElementById('brushSize').value + 'px';
-            document.getElementById('opacityDisplay').textContent = document.getElementById('opacity').value + '%';
-            document.getElementById('gradAngleDisplay').textContent = document.getElementById('gradAngle').value + '°';
+            document.getElementById('moveXDisplay').textContent = document.getElementById('moveX').value + 'px';
+            document.getElementById('moveYDisplay').textContent = document.getElementById('moveY').value + 'px';
+            document.getElementById('rotationDisplay').textContent = document.getElementById('rotation').value + '°';
+            document.getElementById('gradientAngleDisplay').textContent = document.getElementById('gradientAngle').value + '°';
+            document.getElementById('opacityDisplay').textContent = Math.round(document.getElementById('opacity').value * 100) + '%';
+            document.getElementById('scaleXDisplay').textContent = Math.round(document.getElementById('scaleX').value * 100) + '%';
+            document.getElementById('skewXDisplay').textContent = document.getElementById('skewX').value + '°';
             document.getElementById('animSpeedDisplay').textContent = document.getElementById('animSpeed').value + 'x';
-            document.getElementById('exportQualityDisplay').textContent = document.getElementById('exportQuality').value + '%';
             
-            // Update project info
-            document.getElementById('canvasSize').textContent = canvas.width + ' × ' + canvas.height;
-            document.getElementById('layerCount').textContent = layers.length;
-            document.getElementById('currentZoom').textContent = Math.round(currentZoom * 100) + '%';
+            // Update info panel
+            const canvas = document.getElementById('logoCanvas');
+            document.getElementById('canvasInfo').textContent = canvas.width + ' × ' + canvas.height;
+            document.getElementById('fontInfo').textContent = document.getElementById('fontFamily').value;
+            document.getElementById('sizeInfo').textContent = document.getElementById('fontSize').value + 'px';
+            document.getElementById('charCount').textContent = document.getElementById('textInput').value.length;
             document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%';
         }
 
-        function selectTool(tool) {
-            currentTool = tool;
-            
-            // Update tool buttons
-            document.querySelectorAll('.tool-button[data-tool]').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-tool="${tool}"]`).classList.add('active');
-            
-            // Update cursor
-            const cursor = {
-                'text': 'text',
-                'brush': 'crosshair',
-                'crop': 'crosshair',
-                'eraser': 'cell',
-                'select': 'default',
-                'effects': 'pointer'
-            };
-            canvas.style.cursor = cursor[tool] || 'default';
-            
-            // Show/hide crop area
-            if (tool === 'crop') {
-                document.getElementById('cropArea').classList.remove('hidden');
-                setupCropArea();
-            } else {
-                document.getElementById('cropArea').classList.add('hidden');
-            }
-        }
+        function drawLogo() {
+            const canvas = document.getElementById("logoCanvas");
+            const ctx = canvas.getContext("2d");
 
-        function updateText() {
-            if (currentTool !== 'text') return;
+            const text = document.getElementById("textInput").value || "شعار احترافي";
+            const font = document.getElementById("fontFamily").value;
+            const fontWeight = document.getElementById("fontWeight").value;
+            const fontSize = parseInt(document.getElementById("fontSize").value);
+            const colorType = document.getElementById("colorType").value;
+            const textColor = document.getElementById("textColor").value;
+            const gradientColor1 = document.getElementById("gradientColor1").value;
+            const gradientColor2 = document.getElementById("gradientColor2").value;
+            const gradientAngle = parseInt(document.getElementById("gradientAngle").value);
             
-            const text = document.getElementById('textInput').value;
-            const font = document.getElementById('fontFamily').value;
-            const size = document.getElementById('fontSize').value;
+            // Effects
+            const enableGlow = document.getElementById("enableGlow").checked;
+            const glowIntensity = parseInt(document.getElementById("glowIntensity").value);
+            const glowColor = document.getElementById("glowColor").value;
+            const enableShadow = document.getElementById("enableShadow").checked;
+            const shadowX = parseInt(document.getElementById("shadowX").value);
+            const shadowY = parseInt(document.getElementById("shadowY").value);
+            const shadowBlur = parseInt(document.getElementById("shadowBlur").value);
+            const shadowColor = document.getElementById("shadowColor").value;
+            const enableStroke = document.getElementById("enableStroke").checked;
+            const strokeWidth = parseInt(document.getElementById("strokeWidth").value);
+            const strokeColor = document.getElementById("strokeColor").value;
             
-            // Clear and redraw
+            // Transform
+            const moveX = parseInt(document.getElementById("moveX").value);
+            const moveY = parseInt(document.getElementById("moveY").value);
+            const rotation = parseInt(document.getElementById("rotation").value);
+            const opacity = parseFloat(document.getElementById("opacity").value);
+            const scaleX = parseFloat(document.getElementById("scaleX").value);
+            const skewX = parseInt(document.getElementById("skewX").value);
+            
+            // Filters
+            const brightness = parseInt(document.getElementById("brightness").value);
+            const contrast = parseInt(document.getElementById("contrast").value);
+            const saturate = parseInt(document.getElementById("saturate").value);
+            const hueRotate = parseInt(document.getElementById("hueRotate").value);
+            
+            // Background
+            const bgType = document.getElementById("bgType").value;
+            const bgColor = document.getElementById("bgColor").value;
+            const bgGradientColor1 = document.getElementById("bgGradientColor1").value;
+            const bgGradientColor2 = document.getElementById("bgGradientColor2").value;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Apply text styles
-            ctx.font = `${size}px "${font}"`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            // Apply effects
-            applyTextEffects();
-            
-            // Draw text
-            ctx.fillText(text, canvas.width/2, canvas.height/2);
-            
-            saveState();
-        }
 
-        function applyTextEffects() {
-            const enableGlow = document.getElementById('enableGlow').checked;
-            const glowIntensity = document.getElementById('glowIntensity').value;
-            const glowColor = document.getElementById('glowColor').value;
-            const shadowX = document.getElementById('shadowX').value;
-            const shadowY = document.getElementById('shadowY').value;
-            const shadowBlur = document.getElementById('shadowBlur').value;
-            const shadowColor = document.getElementById('shadowColor').value;
-            const brightness = document.getElementById('brightness').value;
-            const contrast = document.getElementById('contrast').value;
-            const saturate = document.getElementById('saturate').value;
-            const hueRotate = document.getElementById('hueRotate').value;
-            const blendMode = document.getElementById('blendMode').value;
+            // Apply background
+            if (bgType === 'transparent') {
+                // Keep transparent
+            } else if (bgType === 'image' && bgImage) {
+                ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+            } else if (bgType === 'gradient') {
+                const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                bgGradient.addColorStop(0, bgGradientColor1);
+                bgGradient.addColorStop(1, bgGradientColor2);
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Setup text properties
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.font = `${fontWeight} ${fontSize}px '${font}'`;
+            ctx.globalAlpha = opacity;
             
+            // Apply filters
+            ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) hue-rotate(${hueRotate}deg)`;
+
+            const x = canvas.width / 2 + moveX;
+            const y = canvas.height / 2 + moveY;
+
+            // Apply transformations
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate((rotation * Math.PI) / 180);
+            ctx.scale(scaleX, 1);
+            ctx.transform(1, 0, Math.tan(skewX * Math.PI / 180), 1, 0, 0);
+
             // Apply glow effect
-            if (enableGlow) {
+            if (enableGlow && glowIntensity > 0) {
                 ctx.shadowColor = glowColor;
                 ctx.shadowBlur = glowIntensity;
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
             }
-            
+
             // Apply shadow
-            ctx.shadowOffsetX = shadowX;
-            ctx.shadowOffsetY = shadowY;
-            ctx.shadowBlur = shadowBlur;
-            ctx.shadowColor = shadowColor;
-            
-            // Apply filters
-            ctx.filter = `
-                brightness(${brightness}%) 
-                contrast(${contrast}%) 
-                saturate(${saturate}%) 
-                hue-rotate(${hueRotate}deg)
-            `;
-            
-            // Apply blend mode
-            ctx.globalCompositeOperation = blendMode;
-            
-            // Apply color
-            const primaryColor = document.getElementById('primaryColor').value;
-            ctx.fillStyle = primaryColor;
-        }
+            if (enableShadow) {
+                ctx.shadowOffsetX = shadowX;
+                ctx.shadowOffsetY = shadowY;
+                ctx.shadowBlur = shadowBlur;
+                ctx.shadowColor = shadowColor;
+            }
 
-        function updateEffects() {
-            updateText();
-        }
+            // Draw stroke
+            if (enableStroke && strokeWidth > 0) {
+                ctx.lineWidth = strokeWidth;
+                ctx.strokeStyle = strokeColor;
+                ctx.strokeText(text, 0, 0);
+                // Reset shadow for main text
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.shadowBlur = 0;
+            }
 
-        function startDrawing(e) {
-            if (currentTool !== 'brush' && currentTool !== 'eraser') return;
-            
-            isDrawing = true;
-            [lastX, lastY] = getMousePos(e);
-            
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-        }
-
-        function draw(e) {
-            if (!isDrawing || (currentTool !== 'brush' && currentTool !== 'eraser')) return;
-            
-            const [currentX, currentY] = getMousePos(e);
-            
-            ctx.lineWidth = document.getElementById('brushSize').value;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            
-            if (currentTool === 'brush') {
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = document.getElementById('primaryColor').value;
-            } else if (currentTool === 'eraser') {
-                ctx.globalCompositeOperation = 'destination-out';
+            // Draw main text with color/gradient
+            if (colorType === 'gradient') {
+                const angleRad = (gradientAngle * Math.PI) / 180;
+                const gradient = ctx.createLinearGradient(
+                    -fontSize * Math.cos(angleRad),
+                    -fontSize * Math.sin(angleRad),
+                    fontSize * Math.cos(angleRad),
+                    fontSize * Math.sin(angleRad)
+                );
+                gradient.addColorStop(0, gradientColor1);
+                gradient.addColorStop(1, gradientColor2);
+                ctx.fillStyle = gradient;
+            } else if (colorType === 'rainbow') {
+                const gradient = ctx.createLinearGradient(-fontSize, 0, fontSize, 0);
+                gradient.addColorStop(0, '#ff0000');
+                gradient.addColorStop(0.17, '#ff8800');
+                gradient.addColorStop(0.33, '#ffff00');
+                gradient.addColorStop(0.5, '#00ff00');
+                gradient.addColorStop(0.67, '#0088ff');
+                gradient.addColorStop(0.83, '#0000ff');
+                gradient.addColorStop(1, '#8800ff');
+                ctx.fillStyle = gradient;
+            } else {
+                ctx.fillStyle = textColor;
             }
             
-            ctx.lineTo(currentX, currentY);
-            ctx.stroke();
-            
-            [lastX, lastY] = [currentX, currentY];
-        }
+            ctx.fillText(text, 0, 0);
+            ctx.restore();
+            ctx.globalAlpha = 1;
+            ctx.filter = 'none';
 
-        function stopDrawing() {
-            if (!isDrawing) return;
-            isDrawing = false;
-            saveState();
-        }
-
-        function getMousePos(e) {
-            const rect = canvas.getBoundingClientRect();
-            return [
-                (e.clientX - rect.left) / currentZoom,
-                (e.clientY - rect.top) / currentZoom
-            ];
-        }
-
-        function setupEventListeners() {
-            // Background removal
-            document.getElementById('bgRemovalInput').addEventListener('change', handleBgRemovalUpload);
-            
-            // Image merger
-            document.getElementById('mergeImages').addEventListener('change', handleImageMerge);
-            
-            // Keyboard shortcuts
-            document.addEventListener('keydown', handleKeyboard);
-        }
-
-        function handleKeyboard(e) {
-            if (e.ctrlKey || e.metaKey) {
-                switch(e.key) {
-                    case 'z':
-                        e.preventDefault();
-                        if (e.shiftKey) {
-                            redoAction();
-                        } else {
-                            undoAction();
-                        }
-                        break;
-                    case 's':
-                        e.preventDefault();
-                        saveProject();
-                        break;
-                    case 'o':
-                        e.preventDefault();
-                        loadProject();
-                        break;
-                }
-            }
-        }
-
-        function saveState() {
-            undoStack.push(canvas.toDataURL());
-            if (undoStack.length > 50) {
-                undoStack.shift();
-            }
-            redoStack = [];
-        }
-
-        function undoAction() {
-            if (undoStack.length > 0) {
-                redoStack.push(canvas.toDataURL());
-                const previousState = undoStack.pop();
-                const img = new Image();
-                img.onload = function() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, 0, 0);
-                };
-                img.src = previousState;
-            }
-        }
-
-        function redoAction() {
-            if (redoStack.length > 0) {
-                undoStack.push(canvas.toDataURL());
-                const nextState = redoStack.pop();
-                const img = new Image();
-                img.onload = function() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, 0, 0);
-                };
-                img.src = nextState;
-            }
-        }
-
-        function drawCanvas() {
-            // Main drawing function - redraws entire canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw each layer
-            layers.forEach((layer, index) => {
-                if (layer.visible) {
-                    ctx.globalAlpha = layer.opacity;
-                    // Draw layer content here
-                    ctx.globalAlpha = 1;
-                }
-            });
-        }
-
-        function addNewLayer() {
-            const newLayer = {
-                id: `layer${layers.length + 1}`,
-                name: `طبقة ${layers.length + 1}`,
-                visible: true,
-                opacity: 1,
-                data: ctx.createImageData(canvas.width, canvas.height)
-            };
-            
-            layers.push(newLayer);
-            currentLayer = layers.length - 1;
-            updateLayersPanel();
-        }
-
-        function updateLayersPanel() {
-            const container = document.getElementById('layersContainer');
-            container.innerHTML = '';
-            
-            layers.forEach((layer, index) => {
-                const layerDiv = document.createElement('div');
-                layerDiv.className = `layer-item ${index === currentLayer ? 'active' : ''}`;
-                layerDiv.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" ${layer.visible ? 'checked' : ''} 
-                                   onchange="toggleLayerVisibility(${index})" class="mr-2 accent-primary" />
-                            <span class="text-sm">${layer.name}</span>
-                        </div>
-                        <div class="flex space-x-reverse space-x-2">
-                            <button onclick="duplicateLayer(${index})" class="text-xs text-blue-400 hover:text-blue-300">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button onclick="deleteLayer(${index})" class="text-xs text-red-400 hover:text-red-300">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <input type="range" min="0" max="1" step="0.1" value="${layer.opacity}"
-                               class="w-full accent-primary" onchange="updateLayerOpacity(${index}, this.value)" />
-                    </div>
-                `;
-                
-                layerDiv.onclick = () => selectLayer(index);
-                container.appendChild(layerDiv);
-            });
-        }
-
-        function selectLayer(index) {
-            currentLayer = index;
-            updateLayersPanel();
-        }
-
-        function toggleLayerVisibility(index) {
-            layers[index].visible = !layers[index].visible;
-            drawCanvas();
-        }
-
-        function updateLayerOpacity(index, opacity) {
-            layers[index].opacity = parseFloat(opacity);
-            drawCanvas();
-        }
-
-        function duplicateLayer(index) {
-            const layer = layers[index];
-            const newLayer = {
-                ...layer,
-                id: `layer${layers.length + 1}`,
-                name: `${layer.name} - نسخة`
-            };
-            layers.splice(index + 1, 0, newLayer);
-            updateLayersPanel();
-        }
-
-        function deleteLayer(index) {
-            if (layers.length > 1) {
-                layers.splice(index, 1);
-                if (currentLayer >= layers.length) {
-                    currentLayer = layers.length - 1;
-                }
-                updateLayersPanel();
-            }
-        }
-
-        // Zoom functions
-        function zoomIn() {
-            currentZoom = Math.min(currentZoom * 1.2, 5);
-            applyZoom();
-        }
-
-        function zoomOut() {
-            currentZoom = Math.max(currentZoom / 1.2, 0.1);
-            applyZoom();
-        }
-
-        function resetZoom() {
-            currentZoom = 1;
-            applyZoom();
-        }
-
-        function applyZoom() {
-            const wrapper = document.getElementById('canvasWrapper');
-            wrapper.style.transform = `scale(${currentZoom})`;
             updateDisplay();
+        }
+
+        function toggleColorMode() {
+            const colorType = document.getElementById('colorType').value;
+            const solidSection = document.getElementById('solidColorSection');
+            const gradientSection = document.getElementById('gradientColorSection');
+            
+            if (colorType === 'gradient') {
+                solidSection.classList.add('hidden');
+                gradientSection.classList.remove('hidden');
+            } else {
+                solidSection.classList.remove('hidden');
+                gradientSection.classList.add('hidden');
+            }
+        }
+
+        function toggleBgMode() {
+            const bgType = document.getElementById('bgType').value;
+            const colorSection = document.getElementById('bgColorSection');
+            const gradientSection = document.getElementById('bgGradientSection');
+            const imageSection = document.getElementById('bgImageSection');
+            
+            // Hide all sections
+            colorSection.classList.add('hidden');
+            gradientSection.classList.add('hidden');
+            imageSection.classList.add('hidden');
+            
+            // Show appropriate section
+            if (bgType === 'color') {
+                colorSection.classList.remove('hidden');
+            } else if (bgType === 'gradient') {
+                gradientSection.classList.remove('hidden');
+            } else if (bgType === 'image') {
+                imageSection.classList.remove('hidden');
+            }
+        }
+
+        function setColor(color) {
+            document.getElementById('textColor').value = color;
+            drawLogo();
+        }
+
+        function applyTemplate(template) {
+            // Remove active class from all templates
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked template
+            event.target.closest('.template-card').classList.add('active');
+            
+            switch(template) {
+                case 'modern':
+                    document.getElementById('fontFamily').value = 'Cairo';
+                    document.getElementById('colorType').value = 'gradient';
+                    document.getElementById('gradientColor1').value = '#6366f1';
+                    document.getElementById('gradientColor2').value = '#8b5cf6';
+                    document.getElementById('fontSize').value = '80';
+                    document.getElementById('enableShadow').checked = true;
+                    document.getElementById('shadowBlur').value = '15';
+                    break;
+                case 'glow':
+                    document.getElementById('fontFamily').value = 'Reem Kufi';
+                    document.getElementById('colorType').value = 'solid';
+                    document.getElementById('textColor').value = '#ffffff';
+                    document.getElementById('enableGlow').checked = true;
+                    document.getElementById('glowIntensity').value = '25';
+                    document.getElementById('glowColor').value = '#6366f1';
+                    document.getElementById('bgColor').value = '#000000';
+                    break;
+                case 'neon':
+                    document.getElementById('fontFamily').value = 'Lalezar';
+                    document.getElementById('colorType').value = 'solid';
+                    document.getElementById('textColor').value = '#00ffff';
+                    document.getElementById('enableGlow').checked = true;
+                    document.getElementById('glowIntensity').value = '30';
+                    document.getElementById('glowColor').value = '#00ffff';
+                    document.getElementById('bgColor').value = '#000000';
+                    document.getElementById('enableStroke').checked = true;
+                    document.getElementById('strokeColor').value = '#ffffff';
+                    break;
+                case 'vintage':
+                    document.getElementById('fontFamily').value = 'Amiri';
+                    document.getElementById('colorType').value = 'solid';
+                    document.getElementById('textColor').value = '#8B4513';
+                    document.getElementById('brightness').value = '90';
+                    document.getElementById('contrast').value = '110';
+                    document.getElementById('saturate').value = '80';
+                    break;
+            }
+            
+            toggleColorMode();
+            updateDisplay();
+            drawLogo();
+        }
+
+        // Animation functions
+        function animateRotate() {
+            if (isAnimating) {
+                stopAllAnimations();
+                return;
+            }
+            
+            isAnimating = true;
+            let angle = 0;
+            const speed = parseFloat(document.getElementById('animSpeed').value);
+            
+            function animate() {
+                if (!isAnimating) return;
+                
+                angle += speed;
+                document.getElementById('rotation').value = angle % 360;
+                drawLogo();
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function animateScale() {
+            if (isAnimating) {
+                stopAllAnimations();
+                return;
+            }
+            
+            isAnimating = true;
+            let scale = 1;
+            let direction = 1;
+            const speed = parseFloat(document.getElementById('animSpeed').value) * 0.02;
+            
+            function animate() {
+                if (!isAnimating) return;
+                
+                scale += direction * speed;
+                if (scale > 1.5 || scale < 0.5) direction *= -1;
+                
+                document.getElementById('scaleX').value = scale;
+                drawLogo();
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function animateGlow() {
+            if (isAnimating) {
+                stopAllAnimations();
+                return;
+            }
+            
+            isAnimating = true;
+            let intensity = 10;
+            let direction = 1;
+            const speed = parseFloat(document.getElementById('animSpeed').value) * 2;
+            
+            document.getElementById('enableGlow').checked = true;
+            
+            function animate() {
+                if (!isAnimating) return;
+                
+                intensity += direction * speed;
+                if (intensity > 40 || intensity < 5) direction *= -1;
+                
+                document.getElementById('glowIntensity').value = intensity;
+                drawLogo();
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function animateFade() {
+            if (isAnimating) {
+                stopAllAnimations();
+                return;
+            }
+            
+            isAnimating = true;
+            let alpha = 1;
+            let direction = -1;
+            const speed = parseFloat(document.getElementById('animSpeed').value) * 0.02;
+            
+            function animate() {
+                if (!isAnimating) return;
+                
+                alpha += direction * speed;
+                if (alpha > 1 || alpha < 0.3) direction *= -1;
+                
+                document.getElementById('opacity').value = alpha;
+                drawLogo();
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function stopAllAnimations() {
+            isAnimating = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            showNotification('تم إيقاف الحركة', 'info');
         }
 
         // Background removal functions
@@ -1169,7 +1147,8 @@
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    // Draw image to canvas for processing
+                    const canvas = document.getElementById('logoCanvas');
+                    const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     showNotification('تم تحميل الصورة، يمكنك الآن إزالة الخلفية', 'success');
                 };
@@ -1181,19 +1160,19 @@
         function removeBackground() {
             showLoading();
             
-            // Simulate background removal process
             setTimeout(() => {
-                // Simple background removal (edge detection)
+                const canvas = document.getElementById('logoCanvas');
+                const ctx = canvas.getContext('2d');
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const data = imageData.data;
                 
-                // Apply basic edge detection and background removal
+                // Simple background removal (white/light colors)
                 for (let i = 0; i < data.length; i += 4) {
                     const r = data[i];
                     const g = data[i + 1];
                     const b = data[i + 2];
                     
-                    // Simple background detection (white/light colors)
+                    // Remove white/light backgrounds
                     if (r > 240 && g > 240 && b > 240) {
                         data[i + 3] = 0; // Make transparent
                     }
@@ -1202,67 +1181,69 @@
                 ctx.putImageData(imageData, 0, 0);
                 hideLoading();
                 showNotification('تم إزالة الخلفية بنجاح!', 'success');
-                saveState();
             }, 2000);
         }
 
-        function selectBackground() {
-            // Implement smart selection tool
-            canvas.style.cursor = 'crosshair';
-            showNotification('انقر على المنطقة التي تريد تحديدها', 'info');
-        }
-
-        function smartSelect() {
-            // Implement AI-powered selection
-            showNotification('جاري التحديد الذكي...', 'info');
-            // Add AI selection logic here
+        function smartRemove() {
+            showLoading();
+            
+            setTimeout(() => {
+                const canvas = document.getElementById('logoCanvas');
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Advanced background removal using edge detection
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    
+                    // More sophisticated background detection
+                    const brightness = (r + g + b) / 3;
+                    const saturation = Math.max(r, g, b) - Math.min(r, g, b);
+                    
+                    if (brightness > 200 && saturation < 30) {
+                        data[i + 3] = 0; // Make transparent
+                    }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                hideLoading();
+                showNotification('تم الإزالة الذكية للخلفية!', 'success');
+            }, 3000);
         }
 
         // Image merger functions
-        function handleImageMerge(e) {
+        function handleImageMergeUpload(e) {
             const files = Array.from(e.target.files);
+            selectedImages = [];
+            
             if (files.length < 2) {
                 showNotification('يرجى اختيار صورتين على الأقل للدمج', 'warning');
                 return;
             }
             
-            showNotification(`تم اختيار ${files.length} صور للدمج`, 'success');
-        }
-
-        function setMergeMode(mode) {
-            mergeMode = mode;
-            document.querySelectorAll('[onclick^="setMergeMode"]').forEach(btn => {
-                btn.classList.remove('bg-blue-600');
-                btn.classList.add('bg-gray-600');
-            });
-            event.target.classList.remove('bg-gray-600');
-            event.target.classList.add('bg-blue-600');
-        }
-
-        function mergeSelectedImages() {
-            const files = document.getElementById('mergeImages').files;
-            if (files.length < 2) {
-                showNotification('يرجى اختيار صورتين على الأقل', 'warning');
-                return;
-            }
+            const mergePreview = document.getElementById('mergePreview');
+            mergePreview.innerHTML = `
+                <div class="text-center">
+                    <i class="fas fa-check-circle text-3xl text-green-400 mb-2"></i>
+                    <p class="text-sm text-green-400">تم اختيار ${files.length} صور</p>
+                </div>
+            `;
             
-            showLoading();
-            
-            const images = [];
+            // Load images
             let loadedCount = 0;
-            
-            Array.from(files).forEach((file, index) => {
+            files.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
-                        images[index] = img;
+                        selectedImages[index] = img;
                         loadedCount++;
                         
-                        updateProgress((loadedCount / files.length) * 50);
-                        
                         if (loadedCount === files.length) {
-                            performMerge(images);
+                            showNotification(`تم تحميل ${files.length} صور بنجاح`, 'success');
                         }
                     };
                     img.src = e.target.result;
@@ -1271,372 +1252,248 @@
             });
         }
 
-        function performMerge(images) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function setMergeMode(mode) {
+            mergeMode = mode;
             
-            const totalImages = images.length;
-            let cols, rows;
-            
-            switch(mergeMode) {
-                case 'horizontal':
-                    cols = totalImages;
-                    rows = 1;
-                    break;
-                case 'vertical':
-                    cols = 1;
-                    rows = totalImages;
-                    break;
-                case 'grid':
-                    cols = Math.ceil(Math.sqrt(totalImages));
-                    rows = Math.ceil(totalImages / cols);
-                    break;
-            }
-            
-            const cellWidth = canvas.width / cols;
-            const cellHeight = canvas.height / rows;
-            
-            images.forEach((img, index) => {
-                const col = index % cols;
-                const row = Math.floor(index / cols);
-                
-                const x = col * cellWidth;
-                const y = row * cellHeight;
-                
-                ctx.drawImage(img, x, y, cellWidth, cellHeight);
-                
-                updateProgress(50 + ((index + 1) / totalImages) * 50);
+            // Update button styles
+            document.querySelectorAll('[id^="merge"]').forEach(btn => {
+                btn.className = btn.className.replace('bg-blue-600', 'bg-gray-600');
             });
             
+            document.getElementById('merge' + mode.charAt(0).toUpperCase() + mode.slice(1)).className = 
+                document.getElementById('merge' + mode.charAt(0).toUpperCase() + mode.slice(1)).className.replace('bg-gray-600', 'bg-blue-600');
+        }
+
+        function mergeSelectedImages() {
+            if (selectedImages.length < 2) {
+                showNotification('يرجى اختيار صورتين على الأقل', 'warning');
+                return;
+            }
+            
+            showLoading();
+            
             setTimeout(() => {
+                const canvas = document.getElementById('logoCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const totalImages = selectedImages.length;
+                let cols, rows;
+                
+                switch(mergeMode) {
+                    case 'horizontal':
+                        cols = totalImages;
+                        rows = 1;
+                        break;
+                    case 'vertical':
+                        cols = 1;
+                        rows = totalImages;
+                        break;
+                    case 'grid':
+                        cols = Math.ceil(Math.sqrt(totalImages));
+                        rows = Math.ceil(totalImages / cols);
+                        break;
+                }
+                
+                const cellWidth = canvas.width / cols;
+                const cellHeight = canvas.height / rows;
+                
+                selectedImages.forEach((img, index) => {
+                    const col = index % cols;
+                    const row = Math.floor(index / cols);
+                    
+                    const x = col * cellWidth;
+                    const y = row * cellHeight;
+                    
+                    ctx.drawImage(img, x, y, cellWidth, cellHeight);
+                    
+                    updateProgress(((index + 1) / totalImages) * 100);
+                });
+                
                 hideLoading();
                 showNotification('تم دمج الصور بنجاح!', 'success');
-                saveState();
-            }, 500);
+            }, 1000);
         }
 
-        // Animation functions
-        function animateRotate() {
-            let angle = 0;
-            const speed = parseFloat(document.getElementById('animSpeed').value);
-            
-            function rotate() {
-                ctx.save();
-                ctx.translate(canvas.width/2, canvas.height/2);
-                ctx.rotate((angle * Math.PI) / 180);
-                ctx.translate(-canvas.width/2, -canvas.height/2);
-                
-                drawCanvas();
-                
-                ctx.restore();
-                
-                angle += speed;
-                const animId = requestAnimationFrame(rotate);
-                animationIds.push(animId);
-            }
-            
-            rotate();
+        // Zoom functions
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom * 1.2, 3);
+            applyZoom();
         }
 
-        function animateScale() {
-            let scale = 1;
-            let direction = 1;
-            const speed = parseFloat(document.getElementById('animSpeed').value) * 0.01;
-            
-            function scaleAnimation() {
-                ctx.save();
-                ctx.translate(canvas.width/2, canvas.height/2);
-                ctx.scale(scale, scale);
-                ctx.translate(-canvas.width/2, -canvas.height/2);
-                
-                drawCanvas();
-                
-                ctx.restore();
-                
-                scale += direction * speed;
-                if (scale > 1.5 || scale < 0.5) direction *= -1;
-                
-                const animId = requestAnimationFrame(scaleAnimation);
-                animationIds.push(animId);
-            }
-            
-            scaleAnimation();
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom / 1.2, 0.3);
+            applyZoom();
         }
 
-        function animateFade() {
-            let alpha = 1;
-            let direction = -1;
-            const speed = parseFloat(document.getElementById('animSpeed').value) * 0.02;
-            
-            function fadeAnimation() {
-                ctx.globalAlpha = alpha;
-                drawCanvas();
-                ctx.globalAlpha = 1;
-                
-                alpha += direction * speed;
-                if (alpha > 1 || alpha < 0.3) direction *= -1;
-                
-                const animId = requestAnimationFrame(fadeAnimation);
-                animationIds.push(animId);
-            }
-            
-            fadeAnimation();
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
         }
 
-        function animateGlow() {
-            let glowSize = 0;
-            let direction = 1;
-            const speed = parseFloat(document.getElementById('animSpeed').value);
-            
-            function glowAnimation() {
-                ctx.shadowColor = document.getElementById('glowColor').value;
-                ctx.shadowBlur = glowSize;
-                
-                drawCanvas();
-                
-                ctx.shadowBlur = 0;
-                
-                glowSize += direction * speed;
-                if (glowSize > 30 || glowSize < 0) direction *= -1;
-                
-                const animId = requestAnimationFrame(glowAnimation);
-                animationIds.push(animId);
-            }
-            
-            glowAnimation();
+        function applyZoom() {
+            const canvas = document.getElementById('logoCanvas');
+            canvas.style.transform = `scale(${currentZoom})`;
+            canvas.style.transformOrigin = 'center';
+            updateDisplay();
         }
 
-        function stopAllAnimations() {
-            animationIds.forEach(id => cancelAnimationFrame(id));
-            animationIds = [];
-            drawCanvas();
-            showNotification('تم إيقاف جميع الحركات', 'info');
-        }
-
-        // Quick actions
+        // Utility functions
         function randomizeAll() {
             // Randomize colors
             const colors = ['#ef4444', '#f59e0b', '#10b981', '#06b6d4', '#6366f1', '#8b5cf6', '#ec4899'];
-            document.getElementById('primaryColor').value = colors[Math.floor(Math.random() * colors.length)];
-            document.getElementById('secondaryColor').value = colors[Math.floor(Math.random() * colors.length)];
+            document.getElementById('textColor').value = colors[Math.floor(Math.random() * colors.length)];
             
             // Randomize font
             const fonts = ['Cairo', 'Amiri', 'Tajawal', 'Reem Kufi', 'Lalezar'];
             document.getElementById('fontFamily').value = fonts[Math.floor(Math.random() * fonts.length)];
             
-            // Randomize size
-            document.getElementById('fontSize').value = Math.floor(Math.random() * 100) + 50;
+            // Randomize effects
+            document.getElementById('enableGlow').checked = Math.random() > 0.5;
+            document.getElementById('glowIntensity').value = Math.floor(Math.random() * 30) + 10;
+            document.getElementById('rotation').value = Math.floor(Math.random() * 360) - 180;
             
-            updateText();
+            drawLogo();
             updateDisplay();
             showNotification('تم تطبيق التصميم العشوائي!', 'success');
         }
 
-        function autoEnhance() {
-            showLoading();
-            
-            setTimeout(() => {
-                // Apply auto enhancement
-                document.getElementById('brightness').value = 110;
-                document.getElementById('contrast').value = 120;
-                document.getElementById('saturate').value = 110;
-                document.getElementById('enableGlow').checked = true;
-                document.getElementById('glowIntensity').value = 15;
-                
-                updateEffects();
-                updateDisplay();
-                hideLoading();
-                showNotification('تم تحسين التصميم تلقائياً!', 'success');
-            }, 1500);
-        }
-
         function addWatermark() {
-            const text = prompt('أدخل نص العلامة المائية:');
-            if (!text) return;
+            const text = prompt('أدخل نص العلامة المائية:') || 'علامة مائية';
+            const canvas = document.getElementById('logoCanvas');
+            const ctx = canvas.getContext('2d');
             
             ctx.save();
             ctx.globalAlpha = 0.3;
-            ctx.font = '24px Cairo';
+            ctx.font = '16px Cairo';
             ctx.fillStyle = '#888888';
             ctx.textAlign = 'right';
-            ctx.fillText(text, canvas.width - 20, canvas.height - 20);
+            ctx.fillText(text, canvas.width - 10, canvas.height - 10);
             ctx.restore();
             
-            saveState();
             showNotification('تم إضافة العلامة المائية', 'success');
         }
 
-        function generateQR() {
-            const text = document.getElementById('textInput').value || 'شعار احترافي';
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(text)}`;
+        function downloadCanvas(format = 'png') {
+            const canvas = document.getElementById("logoCanvas");
+            const link = document.createElement("a");
+            const filename = `logo_${Date.now()}`;
             
-            const img = new Image();
-            img.onload = function() {
-                ctx.drawImage(img, canvas.width - 120, 20, 100, 100);
-                saveState();
-                showNotification('تم إضافة QR Code', 'success');
-            };
-            img.src = qrUrl;
+            const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+            link.href = canvas.toDataURL(mimeType, 0.9);
+            link.download = filename + '.' + format;
+            link.click();
+            
+            showNotification(`تم تحميل الشعار بصيغة ${format.toUpperCase()}`, 'success');
         }
 
-        function applyVintage() {
-            // Apply vintage filter
-            document.getElementById('brightness').value = 90;
-            document.getElementById('contrast').value = 110;
-            document.getElementById('saturate').value = 80;
-            document.getElementById('hueRotate').value = 20;
-            
-            updateEffects();
-            updateDisplay();
-            showNotification('تم تطبيق التأثير القديم', 'success');
-        }
-
-        function makeNeon() {
-            // Apply neon effect
-            document.getElementById('enableGlow').checked = true;
-            document.getElementById('glowIntensity').value = 25;
-            document.getElementById('glowColor').value = '#00ffff';
-            document.getElementById('primaryColor').value = '#ffffff';
-            
-            updateEffects();
-            updateDisplay();
-            showNotification('تم تطبيق تأثير النيون', 'success');
-        }
-
-        // Gradient functions
-        function applyGradient(type) {
-            const gradients = {
-                'blue-purple': ['#6366f1', '#8b5cf6'],
-                'pink-orange': ['#ec4899', '#f59e0b'],
-                'green-blue': ['#10b981', '#06b6d4'],
-                'purple-pink': ['#8b5cf6', '#ec4899']
-            };
-            
-            if (gradients[type]) {
-                document.getElementById('gradStart').value = gradients[type][0];
-                document.getElementById('gradEnd').value = gradients[type][1];
-                applyCustomGradient();
-            }
-        }
-
-        function applyCustomGradient() {
-            const start = document.getElementById('gradStart').value;
-            const end = document.getElementById('gradEnd').value;
-            const angle = document.getElementById('gradAngle').value;
-            
-            // Apply gradient to text
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, start);
-            gradient.addColorStop(1, end);
-            
-            document.getElementById('primaryColor').value = start;
-            updateText();
-            showNotification('تم تطبيق التدرج اللوني', 'success');
-        }
-
-        // Canvas manipulation
-        function clearCanvas() {
-            if (showConfirmDialog('هل أنت متأكد من مسح اللوحة؟', () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                saveState();
-                showNotification('تم مسح اللوحة', 'info');
-            })) {
-                // Confirmation handled in callback
-            }
-        }
-
-        function duplicateCanvas() {
-            const dataURL = canvas.toDataURL();
-            showNotification('تم نسخ اللوحة للحافظة', 'success');
-            
-            // Copy to clipboard if supported
-            if (navigator.clipboard) {
-                canvas.toBlob(blob => {
-                    navigator.clipboard.write([
-                        new ClipboardItem({ 'image/png': blob })
-                    ]);
+        function copyToClipboard() {
+            const canvas = document.getElementById("logoCanvas");
+            canvas.toBlob(function(blob) {
+                const item = new ClipboardItem({ "image/png": blob });
+                navigator.clipboard.write([item]).then(() => {
+                    showNotification('تم نسخ الشعار للحافظة!', 'success');
+                }).catch(() => {
+                    showNotification('فشل في النسخ', 'error');
                 });
-            }
+            });
         }
 
-        function flipHorizontal() {
-            ctx.save();
-            ctx.scale(-1, 1);
-            ctx.drawImage(canvas, -canvas.width, 0);
-            ctx.restore();
-            saveState();
-            showNotification('تم قلب اللوحة أفقياً', 'success');
-        }
-
-        function flipVertical() {
-            ctx.save();
-            ctx.scale(1, -1);
-            ctx.drawImage(canvas, 0, -canvas.height);
-            ctx.restore();
-            saveState();
-            showNotification('تم قلب اللوحة عمودياً', 'success');
-        }
-
-        // Export functions
-        function exportCanvas() {
-            const format = document.getElementById('exportFormat').value;
-            const quality = document.getElementById('exportQuality').value / 100;
-            const width = parseInt(document.getElementById('exportWidth').value);
-            const height = parseInt(document.getElementById('exportHeight').value);
+        function resetAll() {
+            // Reset all controls to default values
+            document.getElementById('textInput').value = 'شعار احترافي';
+            document.getElementById('fontFamily').value = 'Cairo';
+            document.getElementById('fontSize').value = '70';
+            document.getElementById('fontWeight').value = '700';
+            document.getElementById('colorType').value = 'solid';
+            document.getElementById('textColor').value = '#6366f1';
+            document.getElementById('enableGlow').checked = false;
+            document.getElementById('enableShadow').checked = true;
+            document.getElementById('enableStroke').checked = false;
+            document.getElementById('moveX').value = '0';
+            document.getElementById('moveY').value = '0';
+            document.getElementById('rotation').value = '0';
+            document.getElementById('opacity').value = '1';
+            document.getElementById('scaleX').value = '1';
+            document.getElementById('skewX').value = '0';
+            document.getElementById('brightness').value = '100';
+            document.getElementById('contrast').value = '100';
+            document.getElementById('saturate').value = '100';
+            document.getElementById('hueRotate').value = '0';
+            document.getElementById('bgType').value = 'color';
+            document.getElementById('bgColor').value = '#ffffff';
             
-            showLoading();
+            // Clear background image
+            bgImage = null;
             
-            setTimeout(() => {
-                // Create export canvas with specified dimensions
-                const exportCanvas = document.createElement('canvas');
-                const exportCtx = exportCanvas.getContext('2d');
-                exportCanvas.width = width;
-                exportCanvas.height = height;
-                
-                // Draw scaled content
-                exportCtx.drawImage(canvas, 0, 0, width, height);
-                
-                // Export based on format
-                let dataURL;
-                if (format === 'png') {
-                    dataURL = exportCanvas.toDataURL('image/png');
-                } else if (format === 'jpg') {
-                    dataURL = exportCanvas.toDataURL('image/jpeg', quality);
-                } else if (format === 'webp') {
-                    dataURL = exportCanvas.toDataURL('image/webp', quality);
-                }
-                
-                // Download
-                const link = document.createElement('a');
-                link.download = `design_${Date.now()}.${format}`;
-                link.href = dataURL;
-                link.click();
-                
-                hideLoading();
-                showNotification(`تم تصدير التصميم بصيغة ${format.toUpperCase()}`, 'success');
-            }, 1000);
+            // Reset UI states
+            toggleColorMode();
+            toggleBgMode();
+            updateDisplay();
+            drawLogo();
+            
+            showNotification('تم إعادة تعيين جميع الإعدادات!', 'info');
         }
 
         // Project management
         function saveProject() {
             const projectData = {
-                canvas: canvas.toDataURL(),
-                layers: layers,
-                settings: {
-                    textInput: document.getElementById('textInput').value,
-                    fontFamily: document.getElementById('fontFamily').value,
-                    fontSize: document.getElementById('fontSize').value,
-                    primaryColor: document.getElementById('primaryColor').value,
-                    secondaryColor: document.getElementById('secondaryColor').value,
-                    enableGlow: document.getElementById('enableGlow').checked,
-                    glowIntensity: document.getElementById('glowIntensity').value,
-                    glowColor: document.getElementById('glowColor').value
-                }
+                // Text settings
+                textInput: document.getElementById('textInput').value,
+                fontFamily: document.getElementById('fontFamily').value,
+                fontSize: document.getElementById('fontSize').value,
+                fontWeight: document.getElementById('fontWeight').value,
+                
+                // Colors
+                colorType: document.getElementById('colorType').value,
+                textColor: document.getElementById('textColor').value,
+                gradientColor1: document.getElementById('gradientColor1').value,
+                gradientColor2: document.getElementById('gradientColor2').value,
+                gradientAngle: document.getElementById('gradientAngle').value,
+                
+                // Effects
+                enableGlow: document.getElementById('enableGlow').checked,
+                glowIntensity: document.getElementById('glowIntensity').value,
+                glowColor: document.getElementById('glowColor').value,
+                enableShadow: document.getElementById('enableShadow').checked,
+                shadowX: document.getElementById('shadowX').value,
+                shadowY: document.getElementById('shadowY').value,
+                shadowBlur: document.getElementById('shadowBlur').value,
+                shadowColor: document.getElementById('shadowColor').value,
+                enableStroke: document.getElementById('enableStroke').checked,
+                strokeWidth: document.getElementById('strokeWidth').value,
+                strokeColor: document.getElementById('strokeColor').value,
+                
+                // Transform
+                moveX: document.getElementById('moveX').value,
+                moveY: document.getElementById('moveY').value,
+                rotation: document.getElementById('rotation').value,
+                opacity: document.getElementById('opacity').value,
+                scaleX: document.getElementById('scaleX').value,
+                skewX: document.getElementById('skewX').value,
+                
+                // Filters
+                brightness: document.getElementById('brightness').value,
+                contrast: document.getElementById('contrast').value,
+                saturate: document.getElementById('saturate').value,
+                hueRotate: document.getElementById('hueRotate').value,
+                
+                // Background
+                bgType: document.getElementById('bgType').value,
+                bgColor: document.getElementById('bgColor').value,
+                bgGradientColor1: document.getElementById('bgGradientColor1').value,
+                bgGradientColor2: document.getElementById('bgGradientColor2').value,
+                
+                // Canvas
+                canvasWidth: document.getElementById('logoCanvas').width,
+                canvasHeight: document.getElementById('logoCanvas').height
             };
             
             const blob = new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `project_${Date.now()}.json`;
+            link.download = `logo_project_${Date.now()}.json`;
             link.click();
             
             showNotification('تم حفظ المشروع!', 'success');
@@ -1655,35 +1512,28 @@
                 try {
                     const projectData = JSON.parse(e.target.result);
                     
-                    // Load canvas
-                    const img = new Image();
-                    img.onload = function() {
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(img, 0, 0);
-                        saveState();
-                    };
-                    img.src = projectData.canvas;
-                    
-                    // Load settings
-                    const settings = projectData.settings;
-                    Object.keys(settings).forEach(key => {
+                    // Apply all settings
+                    Object.keys(projectData).forEach(key => {
                         const element = document.getElementById(key);
                         if (element) {
                             if (element.type === 'checkbox') {
-                                element.checked = settings[key];
+                                element.checked = projectData[key];
+                            } else if (key === 'canvasWidth' || key === 'canvasHeight') {
+                                // Handle canvas size separately
+                                const canvas = document.getElementById('logoCanvas');
+                                if (key === 'canvasWidth') canvas.width = projectData[key];
+                                if (key === 'canvasHeight') canvas.height = projectData[key];
                             } else {
-                                element.value = settings[key];
+                                element.value = projectData[key];
                             }
                         }
                     });
                     
-                    // Load layers
-                    if (projectData.layers) {
-                        layers = projectData.layers;
-                        updateLayersPanel();
-                    }
-                    
+                    toggleColorMode();
+                    toggleBgMode();
                     updateDisplay();
+                    drawLogo();
+                    
                     showNotification('تم تحميل المشروع بنجاح!', 'success');
                 } catch (error) {
                     showNotification('خطأ في تحميل المشروع', 'error');
@@ -1692,7 +1542,12 @@
             reader.readAsText(file);
         }
 
-        // Utility functions
+        function undoAction() {
+            // Implementation for undo functionality
+            showNotification('وظيفة التراجع قيد التطوير', 'info');
+        }
+
+        // Utility functions for UI
         function showLoading() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
             updateProgress(0);
@@ -1732,75 +1587,6 @@
                 notification.classList.add('translate-x-full');
                 setTimeout(() => document.body.removeChild(notification), 300);
             }, 3000);
-        }
-
-        function showConfirmDialog(message, onConfirm) {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
-                <div class="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4 border border-gray-600">
-                    <p class="text-white mb-4">${message}</p>
-                    <div class="flex justify-end space-x-reverse space-x-3">
-                        <button class="px-4 py-2 text-gray-400 hover:bg-gray-700 rounded" onclick="this.closest('.fixed').remove()">إلغاء</button>
-                        <button class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded" onclick="this.closest('.fixed').remove(); onConfirm()">تأكيد</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            return true;
-        }
-
-        // Additional helper functions
-        function toggleGrid() {
-            // Toggle grid overlay
-            showNotification('تم تبديل عرض الشبكة', 'info');
-        }
-
-        function toggleRulers() {
-            // Toggle rulers
-            showNotification('تم تبديل عرض المساطر', 'info');
-        }
-
-        function updateColor() {
-            if (currentTool === 'text') {
-                updateText();
-            }
-        }
-
-        function updateBrush() {
-            // Update brush settings
-        }
-
-        function updateOpacity() {
-            // Update opacity settings
-        }
-
-        function setupCropArea() {
-            const cropArea = document.getElementById('cropArea');
-            cropArea.style.left = '50px';
-            cropArea.style.top = '50px';
-            cropArea.style.width = '200px';
-            cropArea.style.height = '150px';
-        }
-
-        function toggleTextStyle(style) {
-            const button = event.target.closest('button');
-            button.classList.toggle('active');
-            
-            // Apply text style
-            updateText();
-        }
-
-        function addTextShadow() {
-            document.getElementById('shadowX').value = 5;
-            document.getElementById('shadowY').value = 5;
-            document.getElementById('shadowBlur').value = 10;
-            updateEffects();
-            updateDisplay();
-        }
-
-        function exportOptions() {
-            showNotification('اختر إعدادات التصدير من اللوحة اليمنى', 'info');
         }
     </script>
 </body>
