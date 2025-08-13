@@ -810,3 +810,1035 @@
 
             // Buttons for mask ops
             document.getElementById('flattenMaskBtn').addEventListener('click', flattenMaskIntoBackground);
+            document.getElementById('clearMaskBtn').addEventListener('click', () => {
+              if (!maskCtx) return;
+              maskCtx.save();
+              maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+              maskCtx.fillStyle = 'white';
+              maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+              maskCtx.restore();
+              drawLogo();
+            });
+
+            // Keep offscreens in sync when canvas size changes
+            const origSetCanvasSize = setCanvasSize;
+            setCanvasSize = function() {
+              const oldMask = maskCanvas;
+              origSetCanvasSize();
+              resizeOffscreensPreserveMask(oldMask);
+              refreshBgOffscreen();
+              drawLogo();
+            };
+
+            const origUpdateCanvasSize = updateCanvasSize;
+            updateCanvasSize = function() {
+              const oldMask = maskCanvas;
+              origUpdateCanvasSize();
+              resizeOffscreensPreserveMask(oldMask);
+              refreshBgOffscreen();
+              drawLogo();
+            };
+
+            // Initialize tips rotation
+            setTimeout(updateTips, 2000);
+        };
+
+        function initOffscreens() {
+          const canvas = document.getElementById('logoCanvas');
+          // Mask
+          maskCanvas = document.createElement('canvas');
+          maskCanvas.width = canvas.width;
+          maskCanvas.height = canvas.height;
+          maskCtx = maskCanvas.getContext('2d');
+          maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+          maskCtx.fillStyle = 'white';
+          maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+
+          // Background offscreen
+          bgOffCanvas = document.createElement('canvas');
+          bgOffCanvas.width = canvas.width;
+          bgOffCanvas.height = canvas.height;
+          bgOffCtx = bgOffCanvas.getContext('2d');
+
+          // Overlay
+          overlayCanvas = document.createElement('canvas');
+          overlayCanvas.width = canvas.width;
+          overlayCanvas.height = canvas.height;
+          overlayCtx = overlayCanvas.getContext('2d');
+        }
+
+        function resizeOffscreensPreserveMask(oldMask) {
+          const canvas = document.getElementById('logoCanvas');
+
+          // Preserve mask by scaling
+          const newMask = document.createElement('canvas');
+          newMask.width = canvas.width;
+          newMask.height = canvas.height;
+          const nctx = newMask.getContext('2d');
+          nctx.drawImage(oldMask, 0, 0, newMask.width, newMask.height);
+          maskCanvas = newMask;
+          maskCtx = nctx;
+
+          bgOffCanvas = document.createElement('canvas');
+          bgOffCanvas.width = canvas.width;
+          bgOffCanvas.height = canvas.height;
+          bgOffCtx = bgOffCanvas.getContext('2d');
+
+          overlayCanvas = document.createElement('canvas');
+          overlayCanvas.width = canvas.width;
+          overlayCanvas.height = canvas.height;
+          overlayCtx = overlayCanvas.getContext('2d');
+        }
+
+        function refreshBgOffscreen() {
+          if (!bgImage || !bgOffCtx) return;
+          const canvas = document.getElementById('logoCanvas');
+          bgOffCtx.clearRect(0, 0, canvas.width, canvas.height);
+          bgOffCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        }
+
+        function updateDisplay() {
+            // Update range displays
+            document.getElementById('fontSizeDisplay').textContent = document.getElementById('fontSize').value + 'px';
+            document.getElementById('shadowDepthDisplay').textContent = document.getElementById('shadowDepth').value + 'px';
+            document.getElementById('strokeWidthDisplay').textContent = document.getElementById('strokeWidth').value + 'px';
+            document.getElementById('moveXDisplay').textContent = document.getElementById('moveX').value + 'px';
+            document.getElementById('moveYDisplay').textContent = document.getElementById('moveY').value + 'px';
+            document.getElementById('rotationDisplay').textContent = document.getElementById('rotation').value + '°';
+            document.getElementById('gradientAngleDisplay').textContent = document.getElementById('gradientAngle').value + '°';
+            document.getElementById('opacityDisplay').textContent = Math.round(document.getElementById('opacity').value * 100) + '%';
+            
+            // Update info panel
+            const canvas = document.getElementById('logoCanvas');
+            document.getElementById('canvasInfo').textContent = canvas.width + ' × ' + canvas.height;
+            document.getElementById('fontInfo').textContent = document.getElementById('fontSelect').value;
+            document.getElementById('sizeInfo').textContent = document.getElementById('fontSize').value + 'px';
+            document.getElementById('charCount').textContent = document.getElementById('nameInput').value.length;
+        }
+
+        function toggleColorMode() {
+            const colorType = document.getElementById('colorType').value;
+            const solidSection = document.getElementById('solidColorSection');
+            const gradientSection = document.getElementById('gradientColorSection');
+            
+            if (colorType === 'gradient') {
+                solidSection.classList.add('hidden');
+                gradientSection.classList.remove('hidden');
+            } else {
+                solidSection.classList.remove('hidden');
+                gradientSection.classList.add('hidden');
+            }
+        }
+
+        function toggleBgMode() {
+            const bgType = document.getElementById('bgType').value;
+            const colorSection = document.getElementById('bgColorSection');
+            const gradientSection = document.getElementById('bgGradientSection');
+            const imageSection = document.getElementById('bgImageSection');
+            const filtersSection = document.getElementById('bgFiltersSection');
+            
+            // Hide all sections
+            colorSection.classList.add('hidden');
+            gradientSection.classList.add('hidden');
+            imageSection.classList.add('hidden');
+            if (filtersSection) filtersSection.classList.add('hidden');
+            
+            // Show appropriate section
+            if (bgType === 'color') {
+                colorSection.classList.remove('hidden');
+            } else if (bgType === 'gradient') {
+                gradientSection.classList.remove('hidden');
+            } else if (bgType === 'image') {
+                imageSection.classList.remove('hidden');
+                if (filtersSection) filtersSection.classList.remove('hidden');
+            }
+        }
+
+        function setCanvasSize() {
+            const preset = document.getElementById('canvasPreset').value;
+            const customSection = document.getElementById('customSizeSection');
+            
+            if (preset === 'custom') {
+                customSection.classList.remove('hidden');
+                return;
+            } else {
+                customSection.classList.add('hidden');
+            }
+            
+            const [width, height] = preset.split('x').map(Number);
+            const canvas = document.getElementById('logoCanvas');
+            canvas.width = width;
+            canvas.height = height;
+            
+            updateDisplay();
+            drawLogo();
+        }
+
+        function updateCanvasSize() {
+            const canvas = document.getElementById('logoCanvas');
+            canvas.width = parseInt(document.getElementById('canvasWidth').value);
+            canvas.height = parseInt(document.getElementById('canvasHeight').value);
+            
+            updateDisplay();
+            drawLogo();
+        }
+
+        function setColor(color) {
+            document.getElementById('textColor').value = color;
+            drawLogo();
+        }
+
+        function drawLogo() {
+            if (isAnimating) return;
+            
+            const canvas = document.getElementById("logoCanvas");
+            const ctx = canvas.getContext("2d");
+
+            const name = document.getElementById("nameInput").value || "شعار";
+            const font = document.getElementById("fontSelect").value;
+            const fontWeight = document.getElementById("fontWeight").value;
+            const fontSize = parseInt(document.getElementById("fontSize").value);
+            const colorType = document.getElementById("colorType").value;
+            const textColor = document.getElementById("textColor").value;
+            const gradientColor1 = document.getElementById("gradientColor1").value;
+            const gradientColor2 = document.getElementById("gradientColor2").value;
+            const gradientAngle = parseInt(document.getElementById("gradientAngle").value);
+            const enableShadow = document.getElementById("enableShadow").checked;
+            const shadowDepth = parseInt(document.getElementById("shadowDepth").value);
+            const shadowColor = document.getElementById("shadowColor").value;
+            const enableStroke = document.getElementById("enableStroke").checked;
+            const strokeWidth = parseInt(document.getElementById("strokeWidth").value);
+            const strokeColor = document.getElementById("strokeColor").value;
+            const moveX = parseInt(document.getElementById("moveX").value);
+            const moveY = parseInt(document.getElementById("moveY").value);
+            const rotation = parseInt(document.getElementById("rotation").value);
+            const opacity = parseFloat(document.getElementById("opacity").value);
+            const bgType = document.getElementById("bgType").value;
+            const bgColor = document.getElementById("bgColor").value;
+            const bgGradientColor1 = document.getElementById("bgGradientColor1").value;
+            const bgGradientColor2 = document.getElementById("bgGradientColor2").value;
+
+            // New: filters + mask overlay
+            const bgBlur = parseInt(document.getElementById('bgBlur')?.value || 0);
+            const bgBright = parseInt(document.getElementById('bgBrightness')?.value || 100);
+            const bgContrast = parseInt(document.getElementById('bgContrast')?.value || 100);
+            const bgSat = parseInt(document.getElementById('bgSaturation')?.value || 100);
+            const showMask = document.getElementById('showMaskOverlay')?.value === 'on';
+
+            // New: text effects
+            const textBlendMode = document.getElementById('textBlendMode')?.value || 'source-over';
+            const enableNeon = document.getElementById('enableNeon')?.checked || false;
+            const neonColor = document.getElementById('neonColor')?.value || '#00ffff';
+            const neonBlur = parseInt(document.getElementById('neonBlur')?.value || 25);
+            const enableExtrude = document.getElementById('enableExtrude')?.checked || false;
+            const extrudeDepth = parseInt(document.getElementById('extrudeDepth')?.value || 12);
+            const extrudeAngle = parseInt(document.getElementById('extrudeAngle')?.value || 45);
+            const exRad = (extrudeAngle * Math.PI) / 180;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background drawing
+            if (bgType === 'transparent') {
+                // do nothing
+            } else if (bgType === 'image' && bgImage) {
+                // Prepare background with filters
+                if (bgOffCtx) {
+                    bgOffCtx.clearRect(0, 0, bgOffCanvas.width, bgOffCanvas.height);
+                    bgOffCtx.filter = `blur(${bgBlur}px) brightness(${bgBright}%) contrast(${bgContrast}%) saturate(${bgSat}%)`;
+                    bgOffCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                    bgOffCtx.filter = 'none';
+
+                    // Apply mask to background: out = image ∩ mask
+                    const temp = document.createElement('canvas');
+                    temp.width = canvas.width; temp.height = canvas.height;
+                    const tctx = temp.getContext('2d');
+                    tctx.drawImage(bgOffCanvas, 0, 0);
+                    if (maskCanvas) {
+                        tctx.globalCompositeOperation = 'destination-in';
+                        tctx.drawImage(maskCanvas, 0, 0);
+                        tctx.globalCompositeOperation = 'source-over';
+                    }
+                    ctx.drawImage(temp, 0, 0);
+
+                    // Optional: show deleted areas in red overlay
+                    if (showMask && overlayCtx && maskCanvas) {
+                        overlayCtx.clearRect(0,0,overlayCanvas.width, overlayCanvas.height);
+                        overlayCtx.fillStyle = 'rgba(255,0,0,0.35)';
+                        overlayCtx.fillRect(0,0,overlayCanvas.width, overlayCanvas.height);
+                        overlayCtx.globalCompositeOperation = 'destination-out';
+                        overlayCtx.drawImage(maskCanvas, 0, 0);
+                        overlayCtx.globalCompositeOperation = 'source-over';
+                        ctx.drawImage(overlayCanvas, 0, 0);
+                    }
+                } else {
+                    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                }
+            } else if (bgType === 'gradient') {
+                const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                bgGradient.addColorStop(0, bgGradientColor1);
+                bgGradient.addColorStop(1, bgGradientColor2);
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Setup text properties
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.font = `${fontWeight} ${fontSize}px '${font}'`;
+            ctx.globalAlpha = opacity;
+
+            const x = canvas.width / 2 + moveX;
+            const y = canvas.height / 2 + moveY;
+
+            // Apply rotation
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate((rotation * Math.PI) / 180);
+
+            // Shadow (existing)
+            if (enableShadow && shadowDepth > 0) {
+                for (let i = shadowDepth; i > 0; i--) {
+                    ctx.fillStyle = shadowColor;
+                    ctx.fillText(name, i, i);
+                }
+            }
+
+            // Extrude (3D-like)
+            if (enableExtrude) {
+                const dx = Math.cos(exRad), dy = Math.sin(exRad);
+                for (let i = extrudeDepth; i > 0; i--) {
+                    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+                    ctx.fillText(name, dx * i, dy * i);
+                }
+            }
+
+            // Stroke (outline)
+            if (enableStroke && strokeWidth > 0) {
+                ctx.lineWidth = strokeWidth;
+                ctx.strokeStyle = strokeColor;
+                ctx.globalCompositeOperation = textBlendMode;
+                ctx.strokeText(name, 0, 0);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+            // Main text fill style (solid/gradient)
+            let fillStyle;
+            if (colorType === 'gradient') {
+                const angleRad = (gradientAngle * Math.PI) / 180;
+                const gradient = ctx.createLinearGradient(
+                    -fontSize * Math.cos(angleRad),
+                    -fontSize * Math.sin(angleRad),
+                    fontSize * Math.cos(angleRad),
+                    fontSize * Math.sin(angleRad)
+                );
+                gradient.addColorStop(0, gradientColor1);
+                gradient.addColorStop(1, gradientColor2);
+                fillStyle = gradient;
+            } else {
+                fillStyle = textColor;
+            }
+
+            // Neon glow beneath
+            if (enableNeon) {
+                ctx.save();
+                ctx.shadowColor = neonColor;
+                ctx.shadowBlur = neonBlur;
+                ctx.fillStyle = neonColor;
+                ctx.globalCompositeOperation = textBlendMode;
+                ctx.fillText(name, 0, 0);
+                ctx.restore();
+            }
+
+            // Main fill
+            ctx.fillStyle = fillStyle;
+            ctx.globalCompositeOperation = textBlendMode;
+            ctx.fillText(name, 0, 0);
+            ctx.globalCompositeOperation = 'source-over';
+
+            ctx.restore();
+            ctx.globalAlpha = 1;
+
+            updateDisplay();
+        }
+
+        function applyTemplate(template) {
+            // Remove active class from all templates
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked template
+            event.target.closest('.template-card').classList.add('active');
+            
+            switch(template) {
+                case 'modern':
+                    document.getElementById('fontSelect').value = 'Cairo';
+                    document.getElementById('colorType').value = 'gradient';
+                    document.getElementById('gradientColor1').value = '#6366f1';
+                    document.getElementById('gradientColor2').value = '#8b5cf6';
+                    document.getElementById('fontSize').value = '80';
+                    document.getElementById('enableShadow').checked = true;
+                    document.getElementById('shadowDepth').value = '5';
+                    break;
+                case 'classic':
+                    document.getElementById('fontSelect').value = 'Amiri';
+                    document.getElementById('colorType').value = 'solid';
+                    document.getElementById('textColor').value = '#f59e0b';
+                    document.getElementById('fontSize').value = '70';
+                    document.getElementById('enableStroke').checked = true;
+                    document.getElementById('strokeWidth').value = '2';
+                    break;
+                case 'minimal':
+                    document.getElementById('fontSelect').value = 'Tajawal';
+                    document.getElementById('colorType').value = 'solid';
+                    document.getElementById('textColor').value = '#ffffff';
+                    document.getElementById('fontSize').value = '60';
+                    document.getElementById('enableShadow').checked = false;
+                    document.getElementById('enableStroke').checked = false;
+                    break;
+                case 'gradient':
+                    document.getElementById('fontSelect').value = 'Reem Kufi';
+                    document.getElementById('colorType').value = 'gradient';
+                    document.getElementById('gradientColor1').value = '#ef4444';
+                    document.getElementById('gradientColor2').value = '#f59e0b';
+                    document.getElementById('gradientAngle').value = '90';
+                    document.getElementById('fontSize').value = '75';
+                    break;
+            }
+            
+            toggleColorMode();
+            updateDisplay();
+            drawLogo();
+        }
+
+        function randomizeColors() {
+            const colors = ['#ef4444', '#f59e0b', '#10b981', '#06b6d4', '#6366f1', '#8b5cf6', '#ec4899'];
+            const randomColor1 = colors[Math.floor(Math.random() * colors.length)];
+            const randomColor2 = colors[Math.floor(Math.random() * colors.length)];
+            
+            if (document.getElementById('colorType').value === 'gradient') {
+                document.getElementById('gradientColor1').value = randomColor1;
+                document.getElementById('gradientColor2').value = randomColor2;
+            } else {
+                document.getElementById('textColor').value = randomColor1;
+            }
+            
+            drawLogo();
+        }
+
+        function applyRandomFont() {
+            const fonts = ['Cairo', 'Amiri', 'Tajawal', 'Reem Kufi', 'Scheherazade New', 'Lalezar', 'Markazi Text'];
+            const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+            document.getElementById('fontSelect').value = randomFont;
+            drawLogo();
+        }
+
+        function animatePreview() {
+            if (isAnimating) {
+                stopAnimation();
+                return;
+            }
+            
+            isAnimating = true;
+            const button = event.target;
+            button.innerHTML = '<i class="fas fa-stop mr-2"></i>إيقاف الحركة';
+            button.classList.add('animate-pulse-slow');
+            
+            let angle = 0;
+            const originalRotation = document.getElementById('rotation').value;
+            
+            function animate() {
+                if (!isAnimating) return;
+                
+                angle += 2;
+                document.getElementById('rotation').value = angle % 360;
+                drawLogo();
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            // Stop after 5 seconds
+            setTimeout(() => {
+                stopAnimation();
+                document.getElementById('rotation').value = originalRotation;
+                drawLogo();
+            }, 5000);
+        }
+
+        function stopAnimation() {
+            isAnimating = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            const button = document.querySelector('[onclick="animatePreview()"]');
+            if (button) {
+                button.innerHTML = '<i class="fas fa-play mr-2"></i>معاينة متحركة';
+                button.classList.remove('animate-pulse-slow');
+            }
+        }
+
+        function downloadCanvas(format = 'png') {
+            const canvas = document.getElementById("logoCanvas");
+            const link = document.createElement("a");
+            const filename = `logo_${Date.now()}`;
+            
+            if (format === 'svg') {
+                // Create SVG version (simplified)
+                const svgData = createSVG();
+                const blob = new Blob([svgData], { type: 'image/svg+xml' });
+                link.href = URL.createObjectURL(blob);
+                link.download = filename + '.svg';
+            } else {
+                const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+                link.href = canvas.toDataURL(mimeType, 0.9);
+                link.download = filename + '.' + format;
+            }
+            
+            link.click();
+        }
+
+        function createSVG() {
+            const canvas = document.getElementById("logoCanvas");
+            const name = document.getElementById("nameInput").value || "شعار";
+            const font = document.getElementById("fontSelect").value;
+            const fontSize = document.getElementById("fontSize").value;
+            const textColor = document.getElementById("textColor").value;
+            
+            return `
+                <svg width="${canvas.width}" height="${canvas.height}" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100%" height="100%" fill="${document.getElementById('bgColor').value}"/>
+                    <text x="50%" y="50%" font-family="${font}" font-size="${fontSize}" 
+                          fill="${textColor}" text-anchor="middle" dominant-baseline="middle">
+                        ${name}
+                    </text>
+                </svg>
+            `;
+        }
+
+        function copyToClipboard() {
+            const canvas = document.getElementById("logoCanvas");
+            canvas.toBlob(function(blob) {
+                const item = new ClipboardItem({ "image/png": blob });
+                navigator.clipboard.write([item]).then(() => {
+                    showNotification('تم نسخ الشعار للحافظة!', 'success');
+                }).catch(() => {
+                    showNotification('فشل في النسخ', 'error');
+                });
+            });
+        }
+
+        function generateQRCode() {
+            const text = document.getElementById("nameInput").value || "شعار";
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
+            
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                bgImage = img;
+                document.getElementById('bgType').value = 'image';
+                toggleBgMode();
+                refreshBgOffscreen();
+                drawLogo();
+                showNotification('تم إنشاء QR Code كخلفية!', 'success');
+            };
+            img.src = qrUrl;
+        }
+
+        function saveProject() {
+            const projectData = {
+                nameInput: document.getElementById('nameInput').value,
+                fontSelect: document.getElementById('fontSelect').value,
+                fontSize: document.getElementById('fontSize').value,
+                fontWeight: document.getElementById('fontWeight').value,
+                colorType: document.getElementById('colorType').value,
+                textColor: document.getElementById('textColor').value,
+                gradientColor1: document.getElementById('gradientColor1').value,
+                gradientColor2: document.getElementById('gradientColor2').value,
+                gradientAngle: document.getElementById('gradientAngle').value,
+                enableShadow: document.getElementById('enableShadow').checked,
+                shadowDepth: document.getElementById('shadowDepth').value,
+                shadowColor: document.getElementById('shadowColor').value,
+                enableStroke: document.getElementById('enableStroke').checked,
+                strokeWidth: document.getElementById('strokeWidth').value,
+                strokeColor: document.getElementById('strokeColor').value,
+                textBlendMode: document.getElementById('textBlendMode').value,
+                enableNeon: document.getElementById('enableNeon').checked,
+                neonColor: document.getElementById('neonColor').value,
+                neonBlur: document.getElementById('neonBlur').value,
+                enableExtrude: document.getElementById('enableExtrude').checked,
+                extrudeDepth: document.getElementById('extrudeDepth').value,
+                extrudeAngle: document.getElementById('extrudeAngle').value,
+                moveX: document.getElementById('moveX').value,
+                moveY: document.getElementById('moveY').value,
+                rotation: document.getElementById('rotation').value,
+                opacity: document.getElementById('opacity').value,
+                bgType: document.getElementById('bgType').value,
+                bgColor: document.getElementById('bgColor').value,
+                bgGradientColor1: document.getElementById('bgGradientColor1').value,
+                bgGradientColor2: document.getElementById('bgGradientColor2').value,
+                bgBlur: document.getElementById('bgBlur')?.value || 0,
+                bgBrightness: document.getElementById('bgBrightness')?.value || 100,
+                bgContrast: document.getElementById('bgContrast')?.value || 100,
+                bgSaturation: document.getElementById('bgSaturation')?.value || 100,
+                enableBgEdit: document.getElementById('enableBgEdit').checked,
+                editMode: document.getElementById('editMode').value,
+                showMaskOverlay: document.getElementById('showMaskOverlay').value,
+                brushSize: document.getElementById('brushSize').value,
+                brushHardness: document.getElementById('brushHardness').value,
+                wandTolerance: document.getElementById('wandTolerance').value,
+                wandFeather: document.getElementById('wandFeather').value,
+                canvasWidth: document.getElementById('logoCanvas').width,
+                canvasHeight: document.getElementById('logoCanvas').height
+            };
+
+            // Save mask as dataURL
+            try {
+              projectData.maskDataURL = maskCanvas?.toDataURL('image/png') || null;
+            } catch (e) {
+              projectData.maskDataURL = null;
+            }
+
+            // Save background image if possible
+            try {
+              if (bgImage) {
+                const c = document.createElement('canvas');
+                c.width = document.getElementById('logoCanvas').width;
+                c.height = document.getElementById('logoCanvas').height;
+                const cctx = c.getContext('2d');
+                cctx.drawImage(bgImage, 0, 0, c.width, c.height);
+                projectData.bgImageDataURL = c.toDataURL('image/png');
+              } else {
+                projectData.bgImageDataURL = null;
+              }
+            } catch (e) {
+              projectData.bgImageDataURL = null;
+            }
+            
+            const blob = new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `logo_project_${Date.now()}.json`;
+            link.click();
+            
+            showNotification('تم حفظ المشروع!', 'success');
+        }
+
+        function loadProject() {
+            document.getElementById('projectFileInput').click();
+        }
+
+        function handleProjectLoad(e) {
+            const input = document.getElementById('projectFileInput');
+            const file = e?.target?.files?.[0] || input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const projectData = JSON.parse(ev.target.result);
+                    
+                    // Apply all settings
+                    Object.keys(projectData).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element && key !== 'canvasWidth' && key !== 'canvasHeight') {
+                            if (element.type === 'checkbox') {
+                                element.checked = projectData[key];
+                            } else {
+                                element.value = projectData[key];
+                            }
+                        }
+                    });
+
+                    // Canvas size first
+                    const canvas = document.getElementById('logoCanvas');
+                    if (projectData.canvasWidth) canvas.width = projectData.canvasWidth;
+                    if (projectData.canvasHeight) canvas.height = projectData.canvasHeight;
+
+                    // Resize offscreens
+                    resizeOffscreensPreserveMask(maskCanvas);
+
+                    // Restore background image
+                    if (projectData.bgImageDataURL) {
+                        const img = new Image();
+                        img.onload = function() {
+                            bgImage = img;
+                            refreshBgOffscreen();
+                            drawLogo();
+                        };
+                        img.src = projectData.bgImageDataURL;
+                    }
+
+                    // Restore mask
+                    if (projectData.maskDataURL) {
+                        const mimg = new Image();
+                        mimg.onload = function() {
+                            maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+                            maskCtx.drawImage(mimg, 0, 0, maskCanvas.width, maskCanvas.height);
+                            drawLogo();
+                        };
+                        mimg.src = projectData.maskDataURL;
+                    }
+
+                    toggleColorMode();
+                    toggleBgMode();
+                    updateDisplay();
+                    drawLogo();
+                    
+                    showNotification('تم تحميل المشروع بنجاح!', 'success');
+                } catch (error) {
+                    console.error(error);
+                    showNotification('خطأ في تحميل المشروع', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetAll() {
+            // Reset all inputs to default values
+            document.getElementById('nameInput').value = 'شعار احترافي';
+            document.getElementById('fontSelect').value = 'Cairo';
+            document.getElementById('fontSize').value = '70';
+            document.getElementById('fontWeight').value = 'bold';
+            document.getElementById('colorType').value = 'solid';
+            document.getElementById('textColor').value = '#ffffff';
+            document.getElementById('enableShadow').checked = true;
+            document.getElementById('shadowDepth').value = '8';
+            document.getElementById('shadowColor').value = '#000000';
+            document.getElementById('enableStroke').checked = false;
+            document.getElementById('strokeWidth').value = '3';
+            document.getElementById('strokeColor').value = '#000000';
+
+            document.getElementById('textBlendMode').value = 'source-over';
+            document.getElementById('enableNeon').checked = false;
+            document.getElementById('neonColor').value = '#00ffff';
+            document.getElementById('neonBlur').value = '25';
+            document.getElementById('enableExtrude').checked = false;
+            document.getElementById('extrudeDepth').value = '12';
+            document.getElementById('extrudeAngle').value = '45';
+
+            document.getElementById('moveX').value = '0';
+            document.getElementById('moveY').value = '0';
+            document.getElementById('rotation').value = '0';
+            document.getElementById('opacity').value = '1';
+
+            document.getElementById('bgType').value = 'color';
+            document.getElementById('bgColor').value = '#1a1a1a';
+            document.getElementById('bgGradientColor1').value = '#1a1a1a';
+            document.getElementById('bgGradientColor2').value = '#2a2a2a';
+            document.getElementById('bgBlur').value = 0;
+            document.getElementById('bgBrightness').value = 100;
+            document.getElementById('bgContrast').value = 100;
+            document.getElementById('bgSaturation').value = 100;
+
+            document.getElementById('enableBgEdit').checked = false;
+            document.getElementById('editMode').value = 'erase';
+            document.getElementById('showMaskOverlay').value = 'off';
+            document.getElementById('brushSize').value = 60;
+            document.getElementById('brushHardness').value = 0.8;
+            document.getElementById('wandTolerance').value = 32;
+            document.getElementById('wandFeather').value = 2;
+            
+            // Reset canvas size
+            const canvas = document.getElementById('logoCanvas');
+            canvas.width = 800;
+            canvas.height = 400;
+            document.getElementById('canvasPreset').value = '800x400';
+            
+            // Clear background image
+            bgImage = null;
+
+            // Reset mask/offscreens
+            initOffscreens();
+            
+            // Reset UI states
+            toggleColorMode();
+            toggleBgMode();
+            updateDisplay();
+            drawLogo();
+            
+            showNotification('تم إعادة تعيين جميع الإعدادات!', 'info');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full`;
+            
+            const colors = {
+                success: 'bg-green-600 text-white',
+                error: 'bg-red-600 text-white',
+                info: 'bg-blue-600 text-white',
+                warning: 'bg-yellow-600 text-white'
+            };
+            
+            notification.className += ` ${colors[type]}`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Enable stroke settings when checkbox is checked
+        document.getElementById('enableStroke').addEventListener('change', function() {
+            const strokeSettings = document.getElementById('strokeSettings');
+            if (this.checked) {
+                strokeSettings.classList.remove('hidden');
+            } else {
+                strokeSettings.classList.add('hidden');
+            }
+        });
+
+        // ======== أدوات تحرير الخلفية (قناع + عصا سحرية) ========
+
+        function getCanvasPoint(e) {
+          const canvas = document.getElementById('logoCanvas');
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / rect.width;
+          const scaleY = canvas.height / rect.height;
+          return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+          };
+        }
+
+        function paintBrushAt(x, y) {
+          const mode = document.getElementById('editMode').value; // erase | restore
+          const size = parseInt(document.getElementById('brushSize').value);
+          const hardness = parseFloat(document.getElementById('brushHardness').value);
+          const innerR = size * hardness * 0.5; // solid center
+          const outerR = size * 0.5;
+
+          if (!maskCtx) return;
+
+          maskCtx.save();
+          maskCtx.translate(x, y);
+
+          if (mode === 'erase') {
+            maskCtx.globalCompositeOperation = 'destination-out';
+            const g = maskCtx.createRadialGradient(0, 0, innerR, 0, 0, outerR);
+            g.addColorStop(0, 'rgba(0,0,0,1)');
+            g.addColorStop(1, 'rgba(0,0,0,0)');
+            maskCtx.fillStyle = g;
+            maskCtx.beginPath();
+            maskCtx.arc(0, 0, outerR, 0, Math.PI * 2);
+            maskCtx.fill();
+          } else if (mode === 'restore') {
+            maskCtx.globalCompositeOperation = 'source-over';
+            const g = maskCtx.createRadialGradient(0, 0, innerR, 0, 0, outerR);
+            g.addColorStop(0, 'rgba(255,255,255,1)');
+            g.addColorStop(1, 'rgba(255,255,255,0)');
+            maskCtx.fillStyle = g;
+            maskCtx.beginPath();
+            maskCtx.arc(0, 0, outerR, 0, Math.PI * 2);
+            maskCtx.fill();
+          }
+          maskCtx.restore();
+        }
+
+        function onCanvasPointerDown(e) {
+          const editEnabled = document.getElementById('enableBgEdit').checked;
+          const bgType = document.getElementById('bgType').value;
+          if (!editEnabled || bgType !== 'image' || !bgImage) return;
+
+          const mode = document.getElementById('editMode').value;
+          const pt = getCanvasPoint(e);
+
+          if (mode === 'wand-erase' || mode === 'wand-keep') {
+            applyMagicWand(pt.x, pt.y, mode);
+            drawLogo();
+            return;
+          }
+
+          isPaintingMask = true;
+          paintBrushAt(pt.x, pt.y);
+          drawLogo();
+        }
+
+        function onCanvasPointerMove(e) {
+          if (!isPaintingMask) return;
+          const pt = getCanvasPoint(e);
+          paintBrushAt(pt.x, pt.y);
+          drawLogo();
+        }
+
+        function onCanvasPointerUp() {
+          isPaintingMask = false;
+        }
+
+        function attachCanvasEditEvents() {
+          const canvas = document.getElementById('logoCanvas');
+          canvas.addEventListener('pointerdown', onCanvasPointerDown);
+          window.addEventListener('pointermove', onCanvasPointerMove);
+          window.addEventListener('pointerup', onCanvasPointerUp);
+        }
+
+        function colorDist(r1,g1,b1, r2,g2,b2) {
+          const dr = r1 - r2, dg = g1 - g2, db = b1 - b2;
+          return Math.sqrt(dr*dr + dg*dg + db*db);
+        }
+
+        function applyMagicWand(x, y, mode) {
+          if (!bgOffCanvas || !bgOffCtx) return;
+          const w = bgOffCanvas.width, h = bgOffCanvas.height;
+          if (w === 0 || h === 0) return;
+
+          // Ensure bgOffCanvas holds current background scaled
+          bgOffCtx.clearRect(0, 0, w, h);
+          if (bgImage) bgOffCtx.drawImage(bgImage, 0, 0, w, h);
+
+          const img = bgOffCtx.getImageData(0, 0, w, h);
+          const data = img.data;
+
+          const xi = Math.max(0, Math.min(w - 1, Math.round(x)));
+          const yi = Math.max(0, Math.min(h - 1, Math.round(y)));
+          const startIdx = (yi * w + xi) * 4;
+          const sr = data[startIdx], sg = data[startIdx + 1], sb = data[startIdx + 2];
+
+          const tol = parseInt(document.getElementById('wandTolerance').value);
+          const feather = parseInt(document.getElementById('wandFeather').value);
+
+          const visited = new Uint8Array(w * h);
+          const selection = new Uint8ClampedArray(w * h); // 0/255
+
+          const stack = [xi, yi];
+          while (stack.length) {
+            const cy = stack.pop();
+            const cx = stack.pop();
+            if (cx < 0 || cy < 0 || cx >= w || cy >= h) continue;
+            const idx = cy * w + cx;
+            if (visited[idx]) continue;
+            visited[idx] = 1;
+            const p = idx * 4;
+            const r = data[p], g = data[p+1], b = data[p+2];
+            if (colorDist(r,g,b, sr,sg,sb) <= tol) {
+              selection[idx] = 255;
+              stack.push(cx+1, cy);
+              stack.push(cx-1, cy);
+              stack.push(cx, cy+1);
+              stack.push(cx, cy-1);
+            }
+          }
+
+          // Selection to temp canvas
+          const selCanvas = document.createElement('canvas');
+          selCanvas.width = w; selCanvas.height = h;
+          const sctx = selCanvas.getContext('2d');
+          const selImg = sctx.createImageData(w, h);
+          for (let i = 0; i < w*h; i++) {
+            const a = selection[i];
+            const j = i*4;
+            selImg.data[j] = 255;
+            selImg.data[j+1] = 255;
+            selImg.data[j+2] = 255;
+            selImg.data[j+3] = a;
+          }
+          sctx.putImageData(selImg, 0, 0);
+
+          // Feathering
+          if (feather > 0) {
+            const blurCanvas = document.createElement('canvas');
+            blurCanvas.width = w; blurCanvas.height = h;
+            const bctx = blurCanvas.getContext('2d');
+            bctx.filter = `blur(${feather}px)`;
+            bctx.drawImage(selCanvas, 0, 0);
+            sctx.clearRect(0,0,w,h);
+            sctx.drawImage(blurCanvas, 0, 0);
+          }
+
+          // Apply to mask
+          if (!maskCtx) return;
+          maskCtx.save();
+          if (mode === 'wand-erase') {
+            maskCtx.globalCompositeOperation = 'destination-out';
+          } else {
+            maskCtx.globalCompositeOperation = 'source-over';
+          }
+          maskCtx.drawImage(selCanvas, 0, 0);
+          maskCtx.restore();
+        }
+
+        function flattenMaskIntoBackground() {
+          if (!bgImage) return;
+
+          const canvas = document.getElementById('logoCanvas');
+          const out = document.createElement('canvas');
+          out.width = canvas.width; out.height = canvas.height;
+          const octx = out.getContext('2d');
+
+          // Apply current filters to bg first
+          const bgBlur = parseInt(document.getElementById('bgBlur')?.value || 0);
+          const bgBright = parseInt(document.getElementById('bgBrightness')?.value || 100);
+          const bgContrast = parseInt(document.getElementById('bgContrast')?.value || 100);
+          const bgSat = parseInt(document.getElementById('bgSaturation')?.value || 100);
+          octx.filter = `blur(${bgBlur}px) brightness(${bgBright}%) contrast(${bgContrast}%) saturate(${bgSat}%)`;
+          octx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+          octx.filter = 'none';
+          octx.globalCompositeOperation = 'destination-in';
+          octx.drawImage(maskCanvas, 0, 0);
+          octx.globalCompositeOperation = 'source-over';
+
+          const dataURL = out.toDataURL('image/png');
+          const img = new Image();
+          img.onload = function() {
+            bgImage = img;
+            refreshBgOffscreen();
+            // reset mask to full opaque
+            maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+            maskCtx.fillStyle = 'white';
+            maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+            drawLogo();
+            showNotification('تم دمج التعديلات داخل الخلفية!', 'success');
+          };
+          img.src = dataURL;
+        }
+
+        // Update tips periodically
+        function updateTips() {
+            const tips = [
+                '💡 استخدم الخطوط العربية للحصول على شعار أكثر أصالة',
+                '🎨 جرب التدرجات اللونية لمظهر عصري',
+                '✨ أضف ظلال خفيفة لإعطاء عمق للنص',
+                '📱 تأكد من وضوح الشعار في الأحجام المختلفة',
+                '🔄 استخدم الدوران لإنشاء تأثيرات بصرية مثيرة',
+                '🌈 جرب الألوان العشوائية للحصول على أفكار جديدة',
+                '💾 احفظ مشروعك لاستكماله لاحقاً',
+                '📊 استخدم QR Code لربط الشعار بموقعك'
+            ];
+            
+            const tipsContainer = document.getElementById('tips');
+            let currentTip = 0;
+            
+            setInterval(() => {
+                const tipElements = tipsContainer.children;
+                if (tipElements.length > 0) {
+                    tipElements[currentTip].style.opacity = '0.5';
+                    currentTip = (currentTip + 1) % tipElements.length;
+                    setTimeout(() => {
+                        tipElements[currentTip].style.opacity = '1';
+                    }, 500);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
