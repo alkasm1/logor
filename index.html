@@ -1,0 +1,567 @@
+<!-- Background Editing (Mask) -->
+<div class="control-group">
+  <h3 class="text-lg font-bold mb-4 flex items-center">
+    <i class="fas fa-cut text-accent mr-2"></i>تحرير الخلفية (قناع)
+  </h3>
+
+  <div class="space-y-4">
+    <label class="flex items-center gap-2 text-sm">
+      <input type="checkbox" id="enableBgEdit" class="accent-primary" />
+      تفعيل وضع التحرير بالفرشاة/العصا
+    </label>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="block text-sm font-medium mb-2">وضع الأداة</label>
+        <select id="editMode"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded">
+          <option value="erase">محو بالفرشاة</option>
+          <option value="restore">استعادة بالفرشاة</option>
+          <option value="wand-erase">عصا سحرية (حذف)</option>
+          <option value="wand-keep">عصا سحرية (إبقاء)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">إظهار القناع</label>
+        <select id="showMaskOverlay"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded">
+          <option value="off">إخفاء</option>
+          <option value="on">إظهار (الأجزاء المحذوفة بالأحمر)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="block text-sm font-medium mb-2">حجم الفرشاة</label>
+        <input type="range" id="brushSize" min="5" max="200" value="60" class="w-full accent-primary" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">صلابة الفرشاة</label>
+        <input type="range" id="brushHardness" min="0" max="1" step="0.1" value="0.8" class="w-full accent-primary" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="block text-sm font-medium mb-2">حساسية العصا</label>
+        <input type="range" id="wandTolerance" min="1" max="100" value="32" class="w-full accent-primary" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">تنعيم الحواف (عصا)</label>
+        <input type="range" id="wandFeather" min="0" max="10" value="2" class="w-full accent-primary" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <button id="flattenMaskBtn" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+        دمج التعديلات بالخلفية
+      </button>
+      <button id="clearMaskBtn" class="bg-red-600 hover:bg-red-700 text-white py-2 rounded">
+        مسح القناع
+      </button>
+    </div>
+    <p class="text-xs text-gray-400">ملاحظة: للتحرير يلزم أن تكون الخلفية من نوع "صورة".</p>
+  </div>
+</div>
+<!-- داخل قسم الخلفية -->
+<div id="bgFiltersSection" class="mt-4">
+  <label class="block text-sm font-medium mb-2">فلاتر الصورة</label>
+  <div class="grid grid-cols-2 gap-3">
+    <div>
+      <span class="text-xs text-gray-400">تمويه</span>
+      <input type="range" id="bgBlur" min="0" max="20" value="0" class="w-full accent-primary" />
+    </div>
+    <div>
+      <span class="text-xs text-gray-400">سطوع</span>
+      <input type="range" id="bgBrightness" min="50" max="150" value="100" class="w-full accent-primary" />
+    </div>
+    <div>
+      <span class="text-xs text-gray-400">تباين</span>
+      <input type="range" id="bgContrast" min="50" max="150" value="100" class="w-full accent-primary" />
+    </div>
+    <div>
+      <span class="text-xs text-gray-400">تشبع</span>
+      <input type="range" id="bgSaturation" min="0" max="200" value="100" class="w-full accent-primary" />
+    </div>
+  </div>
+</div>
+<!-- داخل قسم التأثيرات -->
+<div class="space-y-4 mt-4">
+  <div class="grid grid-cols-2 gap-3">
+    <div>
+      <label class="block text-sm font-medium mb-2">وضع مزج النص</label>
+      <select id="textBlendMode" class="w-full px-2 py-1 bg-gray-800 border border-gray-600 rounded text-sm">
+        <option value="source-over">عادي</option>
+        <option value="multiply">Multiply</option>
+        <option value="screen">Screen</option>
+        <option value="overlay">Overlay</option>
+        <option value="lighten">Lighten</option>
+        <option value="darken">Darken</option>
+        <option value="difference">Difference</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">توهج نيون</label>
+      <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" id="enableNeon" class="accent-primary" />
+        تفعيل
+      </label>
+      <input type="color" id="neonColor" value="#00ffff" class="w-full h-8 mt-1 rounded border border-gray-600 bg-transparent cursor-pointer">
+      <input type="range" id="neonBlur" min="0" max="50" value="25" class="w-full accent-primary mt-1" />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-3">
+    <div>
+      <label class="block text-sm font-medium mb-2">بروز ثلاثي الأبعاد</label>
+      <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" id="enableExtrude" class="accent-primary" />
+        تفعيل
+      </label>
+    </div>
+    <div>
+      <span class="text-xs text-gray-400">عمق</span>
+      <input type="range" id="extrudeDepth" min="1" max="50" value="12" class="w-full accent-primary" />
+    </div>
+    <div>
+      <span class="text-xs text-gray-400">زاوية</span>
+      <input type="range" id="extrudeAngle" min="0" max="360" value="45" class="w-full accent-primary" />
+    </div>
+  </div>
+</div>
+// Offscreen canvases for background editing
+let maskCanvas, maskCtx;
+let bgOffCanvas, bgOffCtx;
+let overlayCanvas, overlayCtx;
+
+let isPaintingMask = false;
+
+function initOffscreens() {
+  const canvas = document.getElementById('logoCanvas');
+  // Mask (stores alpha to keep background)
+  maskCanvas = document.createElement('canvas');
+  maskCanvas.width = canvas.width;
+  maskCanvas.height = canvas.height;
+  maskCtx = maskCanvas.getContext('2d');
+  // Start fully opaque (keep all background)
+  maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+  maskCtx.fillStyle = 'white';
+  maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+
+  // Background offscreen (source image scaled to canvas)
+  bgOffCanvas = document.createElement('canvas');
+  bgOffCanvas.width = canvas.width;
+  bgOffCanvas.height = canvas.height;
+  bgOffCtx = bgOffCanvas.getContext('2d');
+
+  // Overlay to preview deleted mask area in red
+  overlayCanvas = document.createElement('canvas');
+  overlayCanvas.width = canvas.width;
+  overlayCanvas.height = canvas.height;
+  overlayCtx = overlayCanvas.getContext('2d');
+}
+
+// Resize offsreens on canvas size change, preserving mask
+function resizeOffscreensPreserveMask(oldMask) {
+  const canvas = document.getElementById('logoCanvas');
+  const newMask = document.createElement('canvas');
+  newMask.width = canvas.width;
+  newMask.height = canvas.height;
+  const nctx = newMask.getContext('2d');
+  // scale old mask into new size
+  nctx.drawImage(oldMask, 0, 0, newMask.width, newMask.height);
+  maskCanvas = newMask;
+  maskCtx = nctx;
+
+  bgOffCanvas = document.createElement('canvas');
+  bgOffCanvas.width = canvas.width;
+  bgOffCanvas.height = canvas.height;
+  bgOffCtx = bgOffCanvas.getContext('2d');
+
+  overlayCanvas = document.createElement('canvas');
+  overlayCanvas.width = canvas.width;
+  overlayCanvas.height = canvas.height;
+  overlayCtx = overlayCanvas.getContext('2d');
+}
+function getCanvasPoint(e) {
+  const canvas = document.getElementById('logoCanvas');
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: (e.clientX - rect.left) * scaleX,
+    y: (e.clientY - rect.top) * scaleY
+  };
+}
+
+function paintBrushAt(x, y) {
+  const mode = document.getElementById('editMode').value; // erase | restore
+  const size = parseInt(document.getElementById('brushSize').value);
+  const hardness = parseFloat(document.getElementById('brushHardness').value);
+  const innerR = size * hardness * 0.5; // solid center
+  const outerR = size * 0.5;
+
+  maskCtx.save();
+  maskCtx.translate(x, y);
+
+  if (mode === 'erase') {
+    // Erase alpha: destination-out with soft radial gradient
+    maskCtx.globalCompositeOperation = 'destination-out';
+    const g = maskCtx.createRadialGradient(0, 0, innerR, 0, 0, outerR);
+    g.addColorStop(0, 'rgba(0,0,0,1)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    maskCtx.fillStyle = g;
+    maskCtx.beginPath();
+    maskCtx.arc(0, 0, outerR, 0, Math.PI * 2);
+    maskCtx.fill();
+  } else if (mode === 'restore') {
+    // Paint alpha back: draw white with soft edge
+    maskCtx.globalCompositeOperation = 'source-over';
+    const g = maskCtx.createRadialGradient(0, 0, innerR, 0, 0, outerR);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    maskCtx.fillStyle = g;
+    maskCtx.beginPath();
+    maskCtx.arc(0, 0, outerR, 0, Math.PI * 2);
+    maskCtx.fill();
+  }
+  maskCtx.restore();
+}
+
+function onCanvasPointerDown(e) {
+  const editEnabled = document.getElementById('enableBgEdit').checked;
+  const bgType = document.getElementById('bgType').value;
+  if (!editEnabled || bgType !== 'image' || !bgImage) return;
+
+  const mode = document.getElementById('editMode').value;
+  const pt = getCanvasPoint(e);
+
+  if (mode === 'wand-erase' || mode === 'wand-keep') {
+    applyMagicWand(pt.x, pt.y, mode);
+    drawLogo();
+    return;
+  }
+
+  isPaintingMask = true;
+  paintBrushAt(pt.x, pt.y);
+  drawLogo();
+}
+
+function onCanvasPointerMove(e) {
+  if (!isPaintingMask) return;
+  const pt = getCanvasPoint(e);
+  paintBrushAt(pt.x, pt.y);
+  drawLogo();
+}
+
+function onCanvasPointerUp() {
+  isPaintingMask = false;
+}
+
+// Attach events after window.onload
+function attachCanvasEditEvents() {
+  const canvas = document.getElementById('logoCanvas');
+  canvas.addEventListener('pointerdown', onCanvasPointerDown);
+  window.addEventListener('pointermove', onCanvasPointerMove);
+  window.addEventListener('pointerup', onCanvasPointerUp);
+}
+function colorDist(r1,g1,b1, r2,g2,b2) {
+  // Euclidean distance in RGB
+  const dr = r1 - r2, dg = g1 - g2, db = b1 - b2;
+  return Math.sqrt(dr*dr + dg*dg + db*db);
+}
+
+function applyMagicWand(x, y, mode) {
+  // Requires bgOffCanvas to have current background image drawn scaled to canvas
+  const w = bgOffCanvas.width, h = bgOffCanvas.height;
+  const img = bgOffCtx.getImageData(0, 0, w, h);
+  const data = img.data;
+
+  const xi = Math.max(0, Math.min(w - 1, Math.round(x)));
+  const yi = Math.max(0, Math.min(h - 1, Math.round(y)));
+  const startIdx = (yi * w + xi) * 4;
+  const sr = data[startIdx], sg = data[startIdx + 1], sb = data[startIdx + 2];
+
+  const tol = parseInt(document.getElementById('wandTolerance').value);
+  const feather = parseInt(document.getElementById('wandFeather').value);
+
+  const visited = new Uint8Array(w * h);
+  const selection = new Uint8ClampedArray(w * h); // 0/255
+
+  const stack = [xi, yi];
+  while (stack.length) {
+    const cy = stack.pop();
+    const cx = stack.pop();
+    if (cx < 0 || cy < 0 || cx >= w || cy >= h) continue;
+    const idx = cy * w + cx;
+    if (visited[idx]) continue;
+    visited[idx] = 1;
+    const p = idx * 4;
+    const r = data[p], g = data[p+1], b = data[p+2];
+    if (colorDist(r,g,b, sr,sg,sb) <= tol) {
+      selection[idx] = 255;
+      // 4-neighbors
+      stack.push(cx+1, cy);
+      stack.push(cx-1, cy);
+      stack.push(cx, cy+1);
+      stack.push(cx, cy-1);
+    }
+  }
+
+  // Paint selection to a temp canvas
+  const selCanvas = document.createElement('canvas');
+  selCanvas.width = w; selCanvas.height = h;
+  const sctx = selCanvas.getContext('2d');
+  const selImg = sctx.createImageData(w, h);
+  for (let i = 0; i < w*h; i++) {
+    const a = selection[i];
+    const j = i*4;
+    selImg.data[j] = 255;     // white
+    selImg.data[j+1] = 255;
+    selImg.data[j+2] = 255;
+    selImg.data[j+3] = a;     // alpha from selection
+  }
+  sctx.putImageData(selImg, 0, 0);
+
+  // Optional feather (edge smoothing)
+  if (feather > 0) {
+    const blurCanvas = document.createElement('canvas');
+    blurCanvas.width = w; blurCanvas.height = h;
+    const bctx = blurCanvas.getContext('2d');
+    bctx.filter = `blur(${feather}px)`;
+    bctx.drawImage(selCanvas, 0, 0);
+    // replace selCanvas with blurred
+    selCanvas.width = w; selCanvas.height = h;
+    const s2 = selCanvas.getContext('2d');
+    s2.clearRect(0,0,w,h);
+    s2.drawImage(blurCanvas, 0, 0);
+  }
+
+  // Apply to mask
+  maskCtx.save();
+  if (mode === 'wand-erase') {
+    maskCtx.globalCompositeOperation = 'destination-out';
+  } else {
+    maskCtx.globalCompositeOperation = 'source-over';
+  }
+  maskCtx.drawImage(selCanvas, 0, 0);
+  maskCtx.restore();
+}
+   // Background drawing
+if (bgType === 'transparent') {
+  // do nothing
+} else if (bgType === 'image' && bgImage) {
+  // Prepare bgOffCanvas with filters
+  bgOffCtx.clearRect(0, 0, bgOffCanvas.width, bgOffCanvas.height);
+  const bgBlur     = parseInt(document.getElementById('bgBlur')?.value || 0);
+  const bgBright   = parseInt(document.getElementById('bgBrightness')?.value || 100);
+  const bgContrast = parseInt(document.getElementById('bgContrast')?.value || 100);
+  const bgSat      = parseInt(document.getElementById('bgSaturation')?.value || 100);
+  bgOffCtx.filter = `blur(${bgBlur}px) brightness(${bgBright}%) contrast(${bgContrast}%) saturate(${bgSat}%)`;
+  bgOffCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+  bgOffCtx.filter = 'none';
+
+  // Apply mask to background: out = image ∩ mask
+  const temp = document.createElement('canvas');
+  temp.width = canvas.width; temp.height = canvas.height;
+  const tctx = temp.getContext('2d');
+  tctx.drawImage(bgOffCanvas, 0, 0);
+  tctx.globalCompositeOperation = 'destination-in';
+  tctx.drawImage(maskCanvas, 0, 0);
+
+  ctx.drawImage(temp, 0, 0);
+
+  // Optional: show deleted areas in red overlay
+  const showMask = document.getElementById('showMaskOverlay')?.value === 'on';
+  if (showMask) {
+    overlayCtx.clearRect(0,0,overlayCanvas.width, overlayCanvas.height);
+    overlayCtx.fillStyle = 'rgba(255,0,0,0.35)';
+    overlayCtx.fillRect(0,0,overlayCanvas.width, overlayCanvas.height);
+    overlayCtx.globalCompositeOperation = 'destination-out';
+    overlayCtx.drawImage(maskCanvas, 0, 0);
+    overlayCtx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(overlayCanvas, 0, 0);
+  }
+} else if (bgType === 'gradient') {
+  const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  bgGradient.addColorStop(0, bgGradientColor1);
+  bgGradient.addColorStop(1, bgGradientColor2);
+  ctx.fillStyle = bgGradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+} else {
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+    // Text blend mode
+const textBlendMode = document.getElementById('textBlendMode')?.value || 'source-over';
+
+// Neon
+const enableNeon = document.getElementById('enableNeon')?.checked;
+const neonColor = document.getElementById('neonColor')?.value || '#00ffff';
+const neonBlur = parseInt(document.getElementById('neonBlur')?.value || 25);
+
+// Extrude
+const enableExtrude = document.getElementById('enableExtrude')?.checked;
+const extrudeDepth = parseInt(document.getElementById('extrudeDepth')?.value || 12);
+const extrudeAngle = parseInt(document.getElementById('extrudeAngle')?.value || 45);
+const exRad = (extrudeAngle * Math.PI) / 180;
+    // Apply rotation transform already in place...
+// Optional shadow pass (your existing shadow)
+if (enableShadow && shadowDepth > 0) {
+  for (let i = shadowDepth; i > 0; i--) {
+    ctx.fillStyle = shadowColor;
+    ctx.fillText(name, i, i);
+  }
+}
+
+// Optional extrude behind text
+if (enableExtrude) {
+  const dx = Math.cos(exRad), dy = Math.sin(exRad);
+  for (let i = extrudeDepth; i > 0; i--) {
+    ctx.fillStyle = 'rgba(0,0,0,0.08)'; // subtle shade
+    ctx.fillText(name, dx * i, dy * i);
+  }
+}
+
+// Stroke (outline)
+if (enableStroke && strokeWidth > 0) {
+  ctx.lineWidth = strokeWidth;
+  ctx.strokeStyle = strokeColor;
+  ctx.globalCompositeOperation = textBlendMode;
+  ctx.strokeText(name, 0, 0);
+  ctx.globalCompositeOperation = 'source-over';
+}
+
+// Main text fill (solid or gradient)
+let fillStyle;
+if (colorType === 'gradient') {
+  const angleRad = (gradientAngle * Math.PI) / 180;
+  const grad = ctx.createLinearGradient(
+    -fontSize * Math.cos(angleRad),
+    -fontSize * Math.sin(angleRad),
+    fontSize * Math.cos(angleRad),
+    fontSize * Math.sin(angleRad)
+  );
+  grad.addColorStop(0, gradientColor1);
+  grad.addColorStop(1, gradientColor2);
+  fillStyle = grad;
+} else {
+  fillStyle = textColor;
+}
+
+// Neon pass beneath main fill
+if (enableNeon) {
+  ctx.save();
+  ctx.shadowColor = neonColor;
+  ctx.shadowBlur = neonBlur;
+  ctx.fillStyle = neonColor;
+  ctx.globalCompositeOperation = textBlendMode;
+  ctx.fillText(name, 0, 0);
+  ctx.restore();
+}
+
+// Main fill
+ctx.fillStyle = fillStyle;
+ctx.globalCompositeOperation = textBlendMode;
+ctx.fillText(name, 0, 0);
+ctx.globalCompositeOperation = 'source-over';
+    initOffscreens();
+attachCanvasEditEvents();
+
+// buttons
+document.getElementById('flattenMaskBtn').addEventListener('click', flattenMaskIntoBackground);
+document.getElementById('clearMaskBtn').addEventListener('click', () => {
+  maskCtx.save();
+  maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+  maskCtx.fillStyle = 'white';
+  maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+  maskCtx.restore();
+  drawLogo();
+});
+
+// Keep offscreens in sync when canvas size changes
+const origSetCanvasSize = setCanvasSize;
+setCanvasSize = function() {
+  const oldMask = maskCanvas;
+  origSetCanvasSize();
+  resizeOffscreensPreserveMask(oldMask);
+  drawLogo();
+};
+
+const origUpdateCanvasSize = updateCanvasSize;
+updateCanvasSize = function() {
+  const oldMask = maskCanvas;
+  origUpdateCanvasSize();
+  resizeOffscreensPreserveMask(oldMask);
+  drawLogo();
+};
+    // When bgImage is assigned/loaded, also refresh bgOffCanvas
+function refreshBgOffscreen() {
+  if (!bgImage) return;
+  const canvas = document.getElementById('logoCanvas');
+  bgOffCtx.clearRect(0, 0, canvas.width, canvas.height);
+  bgOffCtx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+}
+
+document.getElementById("bgImageInput").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const img = new Image();
+      img.onload = function () {
+        bgImage = img;
+        refreshBgOffscreen();
+        drawLogo();
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+function generateQRCode() {
+  const text = document.getElementById("nameInput").value || "شعار";
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
+  const img = new Image();
+  img.crossOrigin = 'anonymous'; // important for wand
+  img.onload = function() {
+    bgImage = img;
+    document.getElementById('bgType').value = 'image';
+    toggleBgMode();
+    refreshBgOffscreen();
+    drawLogo();
+    showNotification('تم إنشاء QR Code كخلفية!', 'success');
+  };
+  img.src = qrUrl;
+}
+    function flattenMaskIntoBackground() {
+  if (!bgImage) return;
+
+  // Compose masked background to a temp canvas
+  const canvas = document.getElementById('logoCanvas');
+  const out = document.createElement('canvas');
+  out.width = canvas.width; out.height = canvas.height;
+  const octx = out.getContext('2d');
+
+  octx.drawImage(bgOffCanvas, 0, 0);
+  octx.globalCompositeOperation = 'destination-in';
+  octx.drawImage(maskCanvas, 0, 0);
+
+  // Convert to image and set as new bgImage; reset mask to full
+  const dataURL = out.toDataURL('image/png');
+  const img = new Image();
+  img.onload = function() {
+    bgImage = img;
+    refreshBgOffscreen();
+    // reset mask to full opaque
+    maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height);
+    maskCtx.fillStyle = 'white';
+    maskCtx.fillRect(0,0,maskCanvas.width,maskCanvas.height);
+    drawLogo();
+    showNotification('تم دمج التعديلات داخل الخلفية!', 'success');
+  };
+  img.src = dataURL;
+}
+    
